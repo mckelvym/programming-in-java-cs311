@@ -1,0 +1,21 @@
+Sex: F
+Pay: $23453.4
+
+Sex: M
+Pay: $34765.8
+
+Sex: M
+Pay: $789876.3
+
+Sex: F
+Pay: $569878.6
+
+Total Males: 2.0
+Total Females: 2.0
+Total Employees: 4.0
+Total Male Salary: 824642.1000000001
+Total Female Salary: 593332.0
+Average Male Salary: 412321.05000000005
+Average Female Salary: 296666.0
+
+SUE THOSE MONKEYS!!!!!!!!!!!!
