@@ -1,0 +1,24 @@
+
+/** getting screen resolution **/
+// this gets the resolution of the screen, and sets it to a Dimension Object
+Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+setLocation((int)((screen.getWidth() - 900) / 2), (int)((screen.getHeight() - 620) / 2));
+        
+
+/** getting lists of files in a directory **/
+File file = new File(name);
+ if (file != null && file.isDirectory()) {
+   	// returns a string[] of all the files in the directory
+ 	String files[] = file.list();
+ 	// getAbsolutePath() returns the directory
+ 	File leafFile = new File(file.getAbsolutePath(), files[i]);
+ }
+ 
+ /** checking for a certain filetype **/
+ String s = file.getName();
+ String type = s.endsWith(".mp3");
+ 
+ /** How to find what type of object you have **/
+ eg. if (object instanceof URL)
+
+output to file
