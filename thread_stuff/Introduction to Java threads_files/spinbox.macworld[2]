@@ -1,0 +1,1 @@
+var str='<a href="http://spinbox.macworld.com/?RC=5004140&AI=6078&RANDOM=89162365433253" target="_top"><IMG SRC="http://spinbox.macworld.com/DA/6078/mp-Pmax0409banG5pkg.gif" HEIGHT="60" WIDTH="468" alt=" " border="0"></a>';document.write(str);

@@ -1,0 +1,625 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0067)http://www.javaworld.com/javaworld/jw-04-1996/jw-04-threads-p2.html -->
+<HTML><HEAD><TITLE>Introduction to Java threads</TITLE><!-- ssilog 7814 -->
+<META http-equiv=content-type content="text/html; charset=windows-1252">
+<META 
+content="&#10;Java, Java, Java, JavaScript, magazine, programming, articles, developers, JavaSoft, JavaWorld, how-to, tutorials, news, tips, tricks, columns, reviews, applets, Nuts &amp; Bolts, News &amp; Views, Java Resources" 
+name=keywords>
+<META 
+content="&#13;&#10;Threads enhance performance and functionality in various&#13;&#10;programming languages -- including Java -- by allowing a program&#13;&#10;to efficiently perform multiple tasks simultaneously. Herein, we&#13;&#10;take a close look at the implementation of threads using Java,&#13;&#10;and offer a step-by-step overview of the fundamentals needed to&#13;&#10;incorporate threads into a Java program. (2,400 words)&#13;&#10;" 
+name=description>
+<META content=1996-04-01 name=date>
+<META content=1996-04-01 name=DC.Date>
+<META content=NOARCHIVE name=GOOGLEBOT><BASEFONT 
+face="verdana, arial, helvetica"><LINK 
+href="Introduction to Java threads2_files/style.htm" type=text/css 
+rel=stylesheet>
+<SCRIPT language=javascript>
+<!--// IDG.net Scripts
+            function mail2Friend () {
+                window.parent.location = "/MailToFriend?url=" + escape(document.location);
+            }
+
+            function openBrWindow() {
+                win=window.open("http://www.javaworld.com/channel_content/jw-story-feedback.shtml",'Feedback','width=600,height=330,toolbar=no,location=no,directories=no,menubar=no,scrollbars=yes,resizable=yes');
+            }
+            //-->
+        </SCRIPT>
+
+<META content="MSHTML 6.00.2800.1400" name=GENERATOR></HEAD>
+<BODY text=#000000 bottomMargin=0 vLink=#990033 aLink=#990033 link=#990033 
+bgColor=#ffffff leftMargin=0 topMargin=0 rightMargin=0 marginwidth="0" 
+marginheight="0"><IMG height=1 alt="" 
+src="Introduction to Java threads2_files/pixel.gif" width=1 border=0> 
+<TABLE cellSpacing=0 cellPadding=0 width="100%" align=center border=0>
+  <TBODY>
+  <TR>
+    <TD width=186 bgColor=#006699 colSpan=2><A 
+      href="http://www.javaworld.com/"><IMG height=81 
+      src="Introduction to Java threads2_files/top_jwlogo.gif" width=186 
+      border=0></A></TD>
+    <TD vAlign=center align=middle width="100%" bgColor=#cccccc><!-- START TOP 728x90 BANNER jw-articles-top-ad.txt  -->
+      <TABLE cellSpacing=0 cellPadding=0 border=0>
+        <TBODY>
+        <TR>
+          <TD><FONT face=Arial,Helvetica,Sans-serif color=#000000 
+            size=-2>Advertisement: Support JavaWorld, click here!</FONT><BR>
+            <SCRIPT language=JavaScript 
+            src="Introduction to Java threads2_files/spinbox.macworld[3]"></SCRIPT>
+            <NOSCRIPT><A href="http://spinbox.macworld.com/?SHT=jw-TopBanner" 
+            target=_top><IMG 
+            src="Introduction to Java threads2_files/jw-house728x90.gif"></A> 
+            </NOSCRIPT></TD></TR></TBODY></TABLE><!-- END TOP 728x90 BANNER --></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" align=center border=0>
+  <TBODY>
+  <TR>
+    <TD width=160 bgColor=#006699><IMG height=8 
+      src="Introduction to Java threads2_files/spacer.gif" width=160 
+border=0></TD>
+    <TD vAlign=top align=left width=26 bgColor=#ffffff><IMG height=8 
+      src="Introduction to Java threads2_files/c_whtbottom.gif" width=8 
+    border=0></TD>
+    <TD width="100%"><IMG height=1 
+      src="Introduction to Java threads2_files/spacer.gif" width=8 
+  border=0></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" align=center border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=center noWrap align=middle width=160 
+      bgColor=#006699><NOBR><FONT face="Verdana, Arial, Sans-serif" 
+      color=#ffffff size=2>April 1996</FONT></NOBR><IMG height=1 
+      src="Introduction to Java threads2_files/spacer.gif" width=160 
+border=0></TD>
+    <TD width=8><IMG height=1 
+      src="Introduction to Java threads2_files/spacer.gif" width=8 border=0></TD>
+    <TD vAlign=top width=8 bgColor=#006699><IMG height=8 
+      src="Introduction to Java threads2_files/c_bltlft.gif" width=8 
+border=0></TD>
+    <TD vAlign=center align=middle width="100%" bgColor=#006699>
+      <TABLE cellSpacing=0 cellPadding=5 width="100%" border=0>
+        <TBODY>
+        <TR>
+          <TD align=middle bgColor=#006699><A 
+            href="http://www.javaworld.com/"><FONT 
+            face=Verdana,Geneva,Arial,Helvetica,sans-serif color=#ffffff 
+            size=1>HOME</FONT></A></TD>
+          <TD align=middle bgColor=#006699><A 
+            href="http://www.javaworld.com/features/index.shtml"><FONT 
+            face=Verdana,Geneva,Arial,Helvetica,sans-serif color=#ffffff 
+            size=1>FEATURED TUTORIALS</FONT></A></TD>
+          <TD align=middle bgColor=#006699><A 
+            href="http://www.javaworld.com/columns/index.shtml"><FONT 
+            face=Verdana,Geneva,Arial,Helvetica,sans-serif color=#ffffff 
+            size=1>COLUMNS</FONT></A></TD>
+          <TD align=middle bgColor=#006699><A 
+            href="http://www.javaworld.com/news-reviews/index.shtml"><FONT 
+            face=Verdana,Geneva,Arial,Helvetica,sans-serif color=#ffffff 
+            size=1>NEWS &amp; REVIEWS</FONT></A></TD>
+          <TD align=middle bgColor=#006699><A 
+            href="http://www.javaworld.com/javaforums/"><FONT 
+            face=Verdana,Geneva,Arial,Helvetica,sans-serif color=#ffffff 
+            size=1>FORUM</FONT></A></TD>
+          <TD align=middle bgColor=#006699><A 
+            href="http://www.javaworld.com/resources/index.shtml"><FONT 
+            face=Verdana,Geneva,Arial,Helvetica,sans-serif color=#ffffff 
+            size=1>JW RESOURCES</FONT></A></TD>
+          <TD align=middle bgColor=#006699><A 
+            href="http://www.javaworld.com/info/jw-about-index.shtml"><FONT 
+            face=Verdana,Geneva,Arial,Helvetica,sans-serif color=#ffffff 
+            size=1>ABOUT JW</FONT></A></TD></TR></TBODY></TABLE></TD>
+    <TD vAlign=top align=right width=8 bgColor=#006699><IMG height=8 
+      src="Introduction to Java threads2_files/c_bltrt.gif" width=8 border=0></TD>
+    <TD width=8><IMG height=1 
+      src="Introduction to Java threads2_files/spacer.gif" width=8 
+  border=0></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" align=center border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD vAlign=top align=middle width=160 bgColor=#006699>
+      <TABLE cellSpacing=0 cellPadding=0 width=160 bgColor=#006699 summary="" 
+      border=0>
+        <TBODY>
+        <TR>
+          <TD width=8><IMG height=1 alt="" 
+            src="Introduction to Java threads2_files/spacer.gif" width=8></TD>
+          <TD align=middle>
+            <FORM name=search action=http://www.javaworld.com/isearch 
+            method=get><IMG height=1 alt="" 
+            src="Introduction to Java threads2_files/rule_ltblue.gif" width=144 
+            vspace=2><BR><BR><INPUT maxLength=2047 size=12 name=qt><BR><INPUT 
+            type=image height=18 alt=GO width=97 
+            src="Introduction to Java threads2_files/button_blue.gif" 
+            value=search border=0><BR><INPUT type=hidden value=javaworld 
+            name=site><BR><!-- <a href="http://www.google.com/"><img src="http://www.javaworld.com/images/google-power-fp.gif" width="108" height="45" border="0" alt="Google.com"></a>--><INPUT 
+            type=hidden value=1 name=ms> <INPUT type=hidden value=1 name=tid> 
+            <INPUT type=hidden value=1 name=st> <INPUT type=hidden value=0 
+            name=rf> </FORM></TD>
+          <TD width=8><IMG height=1 alt="" 
+            src="Introduction to Java threads2_files/spacer.gif" width=8></TD></TR>
+        <TR>
+          <TD width=8><IMG height=1 alt="" 
+            src="Introduction to Java threads2_files/spacer.gif" width=8></TD>
+          <TD><IMG height=1 alt="" 
+            src="Introduction to Java threads2_files/rule_ltblue.gif" width=144 
+            vspace=2><BR><A 
+            href="http://www.javaworld.com/archives/index-year.html"><FONT 
+            face=Verdana,Geneva,Arial,Helvetica,sans-serif color=#ffffff 
+            size=2><STRONG>ARCHIVE</STRONG></FONT></A><BR><IMG height=1 alt="" 
+            src="Introduction to Java threads2_files/rule_ltblue.gif" width=144 
+            vspace=2><BR><STRONG><A 
+            href="http://www.javaworld.com/channel_content/jw-topical-index.shtml"><FONT 
+            face=Verdana,Geneva,Arial,Helvetica,sans-serif color=#ffffff 
+            size=2>TOPICAL INDEX</FONT></A></STRONG></FONT><BR>
+            <TABLE cellSpacing=0 cellPadding=0 summary="" border=0>
+              <TBODY>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Introduction to Java threads2_files/arrow_closed.gif" 
+                  width=8 border=0></TD>
+                <TD><FONT face=Verdana,Geneva,Arial,Helvetica,sans-serif 
+                  size=1><STRONG><A 
+                  href="http://www.javaworld.com/channel_content/jw-core-index.shtml"><FONT 
+                  color=#ffffff>Core Java</FONT></A></STRONG></FONT></TD></TR>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Introduction to Java threads2_files/arrow_closed.gif" 
+                  width=8 border=0></TD>
+                <TD><FONT face=Verdana,Geneva,Arial,Helvetica,sans-serif 
+                  size=1><STRONG><A 
+                  href="http://www.javaworld.com/channel_content/jw-enterprise-index.shtml"><FONT 
+                  color=#ffffff>Enterprise Java</FONT></A></STRONG></FONT></TD></TR>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Introduction to Java threads2_files/arrow_closed.gif" 
+                  width=8 border=0></TD>
+                <TD><FONT face=Verdana,Geneva,Arial,Helvetica,sans-serif 
+                  size=1><STRONG><A 
+                  href="http://www.javaworld.com/channel_content/jw-micro-index.shtml"><FONT 
+                  color=#ffffff>Micro Java</FONT></A></STRONG></FONT></TD></TR>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Introduction to Java threads2_files/arrow_closed.gif" 
+                  width=8 border=0></TD>
+                <TD><FONT face=Verdana,Geneva,Arial,Helvetica,sans-serif 
+                  size=1><STRONG><A 
+                  href="http://www.javaworld.com/channel_content/jw-applied-index.shtml"><FONT 
+                  color=#ffffff>Applied Java</FONT></A></STRONG></FONT></TD></TR>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Introduction to Java threads2_files/arrow_closed.gif" 
+                  width=8 border=0></TD>
+                <TD><FONT face=Verdana,Geneva,Arial,Helvetica,sans-serif 
+                  size=1><STRONG><A 
+                  href="http://www.javaworld.com/channel_content/jw-community-index.shtml"><FONT 
+                  color=#ffffff>Java 
+              Community</FONT></A></STRONG></FONT><BR></TD></TR></TBODY></TABLE><IMG 
+            height=1 alt="" 
+            src="Introduction to Java threads2_files/rule_ltblue.gif" width=144 
+            vspace=2><BR><A 
+            href="http://www.javaworld.com/columns/jw-qna-index.shtml"><FONT 
+            face=Verdana,Geneva,Arial,Helvetica,sans-serif color=#ffffff 
+            size=2><STRONG>JAVA Q&amp;A INDEX</STRONG></FONT></A><BR><IMG 
+            height=1 alt="" 
+            src="Introduction to Java threads2_files/rule_ltblue.gif" width=144 
+            vspace=2><BR><A 
+            href="http://www.javaworld.com/columns/jw-tips-index.shtml"><FONT 
+            face=Verdana,Geneva,Arial,Helvetica,sans-serif color=#ffffff 
+            size=2><STRONG>JAVA TIPS INDEX</STRONG></FONT></A><BR><IMG height=1 
+            alt="" src="Introduction to Java threads2_files/rule_ltblue.gif" 
+            width=144 vspace=2><BR><IMG height=1 alt="" 
+            src="Introduction to Java threads2_files/rule_ltblue.gif" width=144 
+            vspace=2><BR><A 
+            href="http://www.javaworld.com/books/books-index.html"><FONT 
+            face=Verdana,Geneva,Arial,Helvetica,sans-serif color=#ffffff 
+            size=2><STRONG>JAVA BOOK INDEX</STRONG></FONT></A><BR><IMG height=1 
+            alt="" src="Introduction to Java threads2_files/rule_ltblue.gif" 
+            width=144 vspace=2><BR><IMG height=1 alt="" 
+            src="Introduction to Java threads2_files/rule_ltblue.gif" width=144 
+            vspace=8><BR><FONT face=Verdana,Geneva,Arial,Helvetica,sans-serif 
+            color=#cccccc size=2><STRONG>JavaWorld 
+            Services</STRONG></FONT><BR><IMG height=4 alt="" 
+            src="Introduction to Java threads2_files/spacer.gif" width=1 
+            border=0> 
+            <TABLE cellSpacing=0 cellPadding=0 summary="" border=0>
+              <TBODY>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Introduction to Java threads2_files/arrow_closed.gif" 
+                  width=8 border=0><BR><IMG height=7 alt="" 
+                  src="Introduction to Java threads2_files/spacer.gif" width=1 
+                  border=0></TD>
+                <TD><FONT face=Verdana,Geneva,Arial,Helvetica,sans-serif 
+                  size=1><STRONG><A 
+                  href="http://www.javaworld.com/subscribe"><FONT 
+                  color=#ffffff>Newsletters</FONT></A></STRONG></FONT></TD></TR>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Introduction to Java threads2_files/arrow_closed.gif" 
+                  width=8 border=0><BR><IMG height=7 alt="" 
+                  src="Introduction to Java threads2_files/spacer.gif" width=1 
+                  border=0></TD>
+                <TD><FONT face=Verdana,Geneva,Arial,Helvetica,sans-serif 
+                  size=1><STRONG><A 
+                  href="http://www.javaworld.com/subscribe"><FONT 
+                  color=#ffffff>Special Offers</FONT></A></STRONG></FONT></TD></TR>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Introduction to Java threads2_files/arrow_closed.gif" 
+                  width=8 border=0><BR></TD>
+                <TD><FONT face=Verdana,Geneva,Arial,Helvetica,sans-serif 
+                  size=1><STRONG><A 
+                  href="http://javaworld.pricegrabber.com/"><FONT 
+                  color=#ffffff>ProductFinder </FONT></A></STRONG></FONT></TD></TR>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Introduction to Java threads2_files/arrow_closed.gif" 
+                  width=8 border=0><BR></TD>
+                <TD><FONT face=Verdana,Geneva,Arial,Helvetica,sans-serif 
+                  size=1><STRONG><A 
+                  href="http://www.javaworld.com/gdiddoc/953822" 
+                  target=_new><FONT color=#ffffff>Education 
+                  Resources</FONT></A></STRONG></FONT></TD></TR>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Introduction to Java threads2_files/arrow_closed.gif" 
+                  width=8 border=0><BR><IMG height=8 alt="" 
+                  src="Introduction to Java threads2_files/spacer.gif" width=1 
+                  border=0></TD>
+                <TD><FONT face=Verdana,Geneva,Arial,Helvetica,sans-serif 
+                  size=1><STRONG><A 
+                  href="http://www.javaworld.com/white-paper/index.shtml"><FONT 
+                  color=#ffffff>White Paper 
+                  Library</A></FONT></STRONG></A></FONT></TD></TR><!--
+<tr> <td><img alt="" height="7" src="http://www.javaworld.com/images/arrow_closed.gif" width="8" border="0" /><br /></td> <td><font face="Verdana,Geneva,Arial,Helvetica,sans-serif" size="1">
+<P><font color="#FF0000"><em>NEW!</em></font><strong> <A HREF="http://www.click-one.net/mk/get/rational_gen_dev?ppsrc=java_wld_bn" class="SmNv"><font color="#ffffff">Rational Resources</A></P></strong></font>
+
+</td></tr>--></TBODY></TABLE><IMG 
+            height=1 alt="" 
+            src="Introduction to Java threads2_files/rule_ltblue.gif" width=144 
+            vspace=8><BR></TD>
+          <TD width=8><IMG height=1 alt="" 
+            src="Introduction to Java threads2_files/spacer.gif" width=8></TD></TR>
+        <TR vAlign=bottom>
+          <TD width=8><IMG height=1 alt="" 
+            src="Introduction to Java threads2_files/spacer.gif" width=8></TD>
+          <TD></TD>
+          <TD width=8><IMG height=8 alt="" 
+            src="Introduction to Java threads2_files/c_gryblbottom.gif" 
+          width=8></TD></TR>
+        <TR>
+          <TD width=8 bgColor=#cccccc></TD>
+          <TD bgColor=#cccccc></TD>
+          <TD width=8 bgColor=#cccccc></TD></TR>
+        <TR>
+          <TD width=8 bgColor=#cccccc><IMG height=1 alt="" 
+            src="Introduction to Java threads2_files/spacer.gif" width=8></TD>
+          <TD align=middle bgColor=#cccccc><!-- SKYSCRAPER AD START HERE jw-articles-left-ad.txt -->
+            <SCRIPT language=JavaScript 
+            src="\\labserver\Homes\McKelvyJ\My Documents\Introduction to Java threads2_files\spinbox(1).macworld[3]"></SCRIPT>
+            <NOSCRIPT><A 
+            href="http://spinbox.macworld.com/?SHT=jw-LeftSkyScraper" 
+            target=_top><IMG 
+            src="Introduction to Java threads2_files/jw-house120x600.gif"></A> 
+            </NOSCRIPT><!-- SKYSCRAPER AD ENDS HERE --></TD>
+          <TD width=8 bgColor=#cccccc><IMG height=8 alt="" 
+            src="Introduction to Java threads2_files/spacer.gif" width=8></TD></TR>
+        <TR>
+          <TD width=8 bgColor=#cccccc></TD>
+          <TD bgColor=#cccccc></TD>
+          <TD width=8 bgColor=#cccccc></TD></TR>
+        <TR vAlign=top>
+          <TD width=8><IMG height=1 alt="" 
+            src="Introduction to Java threads2_files/spacer.gif" width=8></TD>
+          <TD></TD>
+          <TD width=8><IMG height=8 alt="" 
+            src="Introduction to Java threads2_files/c_grybltop.gif" 
+        width=8></TD></TR></TBODY></TABLE><IMG height=8 
+      src="Introduction to Java threads2_files/spacer.gif" width=160 
+border=0></TD>
+    <TD width=8><IMG height=1 alt="" 
+      src="Introduction to Java threads2_files/spacer.gif" width=8></TD>
+    <TD width="100%"><!-- ## MAIN CONTENT STARTS HERE ### --><FONT 
+      face="verdana, arial, helvetica" size=3><STRONG></STRONG>
+      <P>
+      <H1 align=center>Introduction to Java threads</H1>
+      <H3 align=center>A quick tutorial on how to implement threads in Java</H3>
+      <P></P><!--<BLOCKQUOTE><STRONG>Summary</STRONG><BR>--><!-- REPLACE SUMMARY --><!--</BLOCKQUOTE>--><A 
+      href="http://www.javaworld.com/feedback" target=Feedback><!-- REPLACE AUTHOR --></A>
+      <P><IMG height=2 src="Introduction to Java threads2_files/rule_ltblue.gif" 
+      width="100%"><BR><IMG height=15 alt="Printer-friendly version" 
+      src="Introduction to Java threads2_files/jw-print-icon.gif" width=16 
+      align=absMiddle vspace=4 border=0> <A 
+      href="http://www.javaworld.com/javaworld/jw-04-1996/jw-04-threads_p.html">Printer-friendly 
+      version</A> | <IMG height=15 alt="Send this article to a friend" 
+      src="Introduction to Java threads2_files/jw-email-icon.gif" width=20 
+      border=0> <A href="javascript:mail2Friend()">Mail this to a friend</A></P>
+      <P><BR></P><FONT size=-1>Page 2 of 2</FONT> 
+      <P><!-- START BIG AD (336x280) jw-articles-336x280.txt -->
+      <TABLE cellSpacing=0 cellPadding=0 align=right border=0>
+        <TBODY>
+        <TR vAlign=bottom align=middle>
+          <TD><FONT face="verdana, arial, geneva, sans-serif" color=#999999 
+            size=-2>Advertisement</FONT></TD></TR>
+        <TR>
+          <TD>
+            <TABLE borderColor=#cccccc cellSpacing=5 cellPadding=0 border=1>
+              <TBODY>
+              <TR>
+                <TD>
+                  <SCRIPT language=JavaScript 
+                  src="Introduction to Java threads2_files/spinbox.macworld[4]"></SCRIPT>
+                  <NOSCRIPT><A href="http://spinbox.macworld.com/?SHT=jw-BigBox" 
+                  target=_top><IMG 
+                  src="Introduction to Java threads2_files/jw-house336x280.gif"></A> 
+                  </NOSCRIPT></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE><!-- END BIG AD (336x280) --></P>
+      <P>
+      <P><FONT size=+1><STRONG>Starting and stopping </STRONG></FONT><BR>Since 
+      the different ways to create an instance of a thread are now apparent, we 
+      will discuss the implementation of threads beginning with the ways 
+      available to start and stop them using a small applet containing a thread 
+      to illustrate the mechanics: 
+      <P><A 
+      href="http://www.javaworld.com/javaworld/jw-04-1996/threads/CounterThreadExample.html">CounterThread</A> 
+      Example and Source code 
+      <P>The above applet will start counting from 0 displaying its output to 
+      both the screen and the console. A quick glance might give the impression 
+      that the program will start counting and display every number, but this is 
+      not the case. A closer examination of the execution of this applet will 
+      reveal its true identity. 
+      <P>In this case, the <TT>CounterThread</TT> class was forced to implement 
+      Runnable since it extended the class Applet. As in all applets, the 
+      <TT>init()</TT> method gets executed first. In <TT>init()</TT>, the 
+      variable Count is initialized to zero and a new instance of the 
+      <TT>Thread</TT> class is created. By passing <TT>this</TT> to the 
+      <TT>Thread</TT> constructor, the new thread will know which object to run. 
+      In this case <TT>this</TT> is a reference to <TT>CounterThread</TT>. After 
+      the thread is created it needs to be started. The call to <TT>start()</TT> 
+      will call the target's <TT>run()</TT> method, which is 
+      <TT>CounterThread</TT>.<TT>run()</TT>. The call to <TT>start()</TT> will 
+      return right away and the thread will start executing at the same time. 
+      Note that the <TT>run()</TT> method is an infinite loop. It is infinite 
+      because once the <TT>run()</TT> method exits, the thread stops executing. 
+      The <TT>run()</TT> method will increment the variable Count, sleep for 10 
+      milliseconds and send a request to refresh the applet's display. 
+      <P>Note that it is important to sleep somewhere in a thread. If not, the 
+      thread will consume all CPU time for the process and will not allow any 
+      other methods such as threads to be executed. Another way to cease the 
+      execution of a thread is to call the <TT>stop()</TT> method. In this 
+      example, the thread stops when the mouse is pressed while the cursor is in 
+      the applet. Depending on the speed of the computer the applet runs on, not 
+      every number will be displayed, because the incrementing is done 
+      independent of the painting of the applet. The applet can not be refreshed 
+      at every request, so the OS will queue the requests and successive refresh 
+      requests will be satisfied with one refresh. While the refreshes are 
+      queuing up, the Count is still being incremented but not displayed. 
+      <P><FONT size=+1><STRONG>Suspending and resuming </STRONG></FONT><BR>Once 
+      a thread is stopped, it cannot be restarted with the <TT>start()</TT> 
+      command, since <TT>stop()</TT> will terminate the execution of a thread. 
+      Instead you can pause the execution of a thread with the <TT>sleep()</TT> 
+      method. The thread will sleep for a certain period of time and then begin 
+      executing when the time limit is reached. But, this is not ideal if the 
+      thread needs to be started when a certain event occurs. In this case, the 
+      <TT>suspend()</TT> method allows a thread to temporarily cease executing 
+      and the <TT>resume()</TT> method allows the suspended thread to start 
+      again. The following applet shows the above example modified to suspend 
+      and resume the applet. 
+      <P><CODE>
+      <P><BR>public class CounterThread2 extends Applet implements 
+      Runnable<BR>{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thread 
+      t;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int 
+      Count;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;boolean 
+      suspended;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public 
+      boolean mouseDown(Event e,int x, int 
+      y)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if(suspended)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t.resume();<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t.suspend();<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;suspended 
+      = 
+      !suspended;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 
+      true;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<BR>}<BR></CODE>
+      <P><A 
+      href="http://www.javaworld.com/javaworld/jw-04-1996/threads/CounterThread2Example.html">CounterThread2</A> 
+      Example and Source code 
+      <P>To keep track of the current state of the applet, the boolean variable 
+      <TT>suspended</TT> is used. Distinguishing the different states of an 
+      applet is important because some methods will throw exceptions if they are 
+      called while in the wrong state. For example, if the applet has been 
+      started and stopped, executing the <TT>start()</TT> method will throw an 
+      <TT>IllegalThreadStateException</TT> exception. 
+      <P><FONT size=+1><STRONG>Scheduling </STRONG></FONT><BR>Java has a Thread 
+      Scheduler that monitors all running threads in all programs and decides 
+      which threads should be running and which are in line to be executed. 
+      There are two characteristics of a thread that the scheduler identifies in 
+      its decision process. One, the most important, is the priority of the 
+      thread, the other is the daemon flag. The scheduler's basic rule is if 
+      there are only daemon threads running, the Java Virtual Machine (JVM) will 
+      exit. New threads inherit the priority and daemon flag from the thread 
+      that created it. The scheduler determines which thread should be executed 
+      by analyzing the priorities of all threads. Those with the highest 
+      priority are allowed execution before any lower priority threads. 
+      <P>The scheduler can be of two flavors, preemptive or non-preemptive. 
+      Preemptive schedulers give a certain time-slice to all threads running on 
+      the system. The scheduler decides which thread is next to run and 
+      <TT>resume()</TT> that thread for some constant period of time. When the 
+      thread has executed for that time period it will be <TT>suspended()</TT> 
+      and the next thread scheduled will be <TT>resumed()</TT>. Non-preemptive 
+      schedulers decide which thread should run and run it until the thread is 
+      complete. The thread has full control of the system for as long as it 
+      likes. The <TT>yield()</TT> method is a way for a thread to force the 
+      scheduler to start executing another waiting thread. Depending on the 
+      system Java is running on, the scheduler can be either preemptive or 
+      non-preemptive. 
+      <P><FONT size=+1><STRONG>Priorities </STRONG></FONT><BR>The scheduler 
+      determines which thread should be running based on a priority number 
+      assigned to each thread. The range of priorities is from 1 to 10. The 
+      default priority of a thread is 
+      <TT>Thread</TT>.<TT>NORM</TT>_<TT>PRIORITY</TT>, which is assigned the 
+      value of 5. Two other static variables are made available, they are 
+      <TT>Thread</TT>.<TT>MIN</TT>_<TT>PRIORITY</TT>, which is set to 1, and 
+      <TT>Thread</TT>.<TT>MAX</TT>_<TT>PRIORITY</TT>, which is set to 10. The 
+      <TT>getPriority()</TT> method can be used to find the current value of the 
+      priority of a thread. 
+      <P><FONT size=+1><STRONG>Daemon threads </STRONG></FONT><BR>Daemon threads 
+      are sometimes called "service" threads that normally run at a low priority 
+      and provide a basic service to a program or programs when activity on a 
+      machine is reduced. An example of a daemon thread that is continuously 
+      running is the garbage collector thread. This thread, provided by the JVM, 
+      will scan programs for variables that will never be accessed again and 
+      free up their resources back to the system. A thread can set the daemon 
+      flag by passing a true boolean value to the <TT>setDaemon()</TT> method. 
+      If a false boolean value is passed, the thread will become a user thread. 
+      However, this must occur before the thread has been started. 
+      <P><FONT size=+1><STRONG>Scheduling example </STRONG></FONT><BR>The 
+      following applet demonstrates the execution of two threads with different 
+      priorities. One thread is running at the lowest priority and the other at 
+      the highest priority. The threads will count until the faster thread's 
+      counter catches up to the slower threads counter. 
+      <P><A 
+      href="http://www.javaworld.com/javaworld/jw-04-1996/threads/ScheduleThreadsExample.html">ScheduleThreads</A> 
+      Example and source code 
+      <P><FONT size=+1><STRONG>Conclusion </STRONG></FONT><BR>Using threads in 
+      Java will enable greater flexibility to programmers looking for that extra 
+      edge in their programs. The simplicity of creating, configuring and 
+      running threads lets Java programmers devise portable and powerful 
+      applets/applications that cannot be made in other third-generation 
+      languages. Threads allow any program to perform multiple tasks at once. In 
+      an Internet-aware language such as Java, this is a very important tool. 
+      <IMG height=12 src="Introduction to Java threads2_files/jw-dingbat.gif" 
+      width=22>
+      <P><!-- PAGECOUNT 2 --><BR></P><FONT size=-1>Page 1 <A 
+      href="http://www.javaworld.com/javaworld/jw-04-1996/jw-04-threads.html">Introduction 
+      to Java threads</A><BR>Page 2 Starting and stopping <BR></FONT><!-- REPLACE TALKBACK -->
+      <P><IMG height=15 alt="Printer-friendly version" 
+      src="Introduction to Java threads2_files/jw-print-icon.gif" width=16 
+      align=absMiddle vspace=4 border=0> <A 
+      href="http://www.javaworld.com/javaworld/jw-04-1996/jw-04-threads_p.html">Printer-friendly 
+      version</A> | <IMG height=15 alt="Send this article to a friend" 
+      src="Introduction to Java threads2_files/jw-email-icon.gif" width=20 
+      border=0> <A href="javascript:mail2Friend()">Mail this to a friend</A></P>
+      <P><STRONG>About the author</STRONG><BR><A 
+      href="http://www.javaworld.com/javaworld/feedback/jw-feedback-form.html">Donald 
+      G. Drake</A> has been programming in Java since the alpha release. Drake 
+      has written applets designed to spice up web sites. The most popular is 
+      his version of a <A 
+      href="http://www.netobjective.com/java/TickerTapeInfo.html">TickerTape</A> 
+      (http://www.netobjective.com/java/TickerTapeInfo.html), which can be 
+      extensively configured to blend into any web page. Drake's background 
+      includes a Bachelor of Science degree in Computer Science from John 
+      Carroll University. He is currently pursuing a Masters of Science Degree 
+      at DePaul University. <BR></P>
+      <P>
+      <UL><A name=resources></A><STRONG>Resources</STRONG> <BR>
+        <LI><A 
+        href="http://www.sun.com/sunworldonline/swol-02-1996/swol-02-threads.html">How 
+        to program with threads: An introduction to multithreaded 
+        programming</A> 
+        http://www.sun.com/sunworldonline/swol-02-1996/swol-02-threads.html<BR>
+        <LI><A 
+        href="http://www.javaworld.com/javaworld/jw-04-1996/jw-04-synch.html">Using 
+        threads in Java</A> 
+        http://www.javaworld.com/javaworld/jw-04-1996/jw-04-synch.html<BR>
+        <LI><A 
+        href="http://java.sun.com/JDK-1.0/api/java.lang.Thread.html">Sun's API 
+        documentation on threads</A> 
+        http://java.sun.com/JDK-1.0/api/java.lang.Thread.html<BR>
+        <LI><A 
+        href="http://java.sun.com/tutorial/applet/overview/threads.html">Sun's 
+        tutorial on threads</A> 
+        http://java.sun.com/tutorial/applet/overview/threads.html<BR>
+        <LI><A href="http://www.fsg.com/tech/threadmon.htm">Thread monitoring 
+        applet -- excellent utility</A> 
+http://www.fsg.com/tech/threadmon.htm<BR>
+        <LI><A href="http://www.mcp.com/samsnet/books/tyjava">Teach Yourself 
+        Java in 21 Days - Currently one of the best books on learning Java</A> 
+        http://www.mcp.com/samsnet/books/tyjava<BR></LI></UL><BR>
+      <P></P><!-- REPLACE SIDEBAR --></FONT><!-- ## MAIN CONTENT ENDS HERE ### -->
+      <TABLE cellSpacing=0 cellPadding=3 width=490 border=0>
+        <TBODY>
+        <TR>
+          <TD vAlign=top bgColor=#990033><FONT 
+            face="Geneva, Verdana, Arial, Helvetica" color=#ffffff size=1><B>Top 
+            Offers</B></FONT> </TD></TR>
+        <TR>
+          <TD bgColor=#e4e4c0>
+            <P><FONT face="verdana, arial, sans-serif" size=1><A 
+            href="http://www.travelingto.net/">http://www.travelingto.net/</A>Travel 
+            Directory</FONT></P>
+            <P><FONT face="verdana, arial, sans-serif" size=1><A 
+            href="http://www.goapply.com/">Refinance Mortgage</A> Mortgage 
+            refinancing, home loans and home equity loans</FONT></P><!--<p><font face="verdana, arial, sans-serif" size="1"><a href="http://www.101-asp-tutorials.com">ASP Tutorials:</a> Learn the basics of ASP (Active Server Pages) programming.  We are your online source for ASP Tutorials and ASP Tools.</font</p>--></TD></TR></TBODY></TABLE><!--<a href='http://stories2.devworld.com/phpads/adclick.php?n=aed75c45' target='_blank'><img src='http://stories2.devworld.com/phpads/adview.php?what=zone:1&amp;n=aed75c45' border='0' alt=''></a>--></TD>
+    <TD width=8><IMG height=1 
+      src="Introduction to Java threads2_files/spacer.gif" width=8 
+  border=0></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" align=center border=0>
+  <TBODY>
+  <TR>
+    <TD noWrap width=168 bgColor=#006699><NOBR><IMG height=8 
+      src="Introduction to Java threads2_files/spacer.gif" width=160 
+      border=0><IMG height=8 
+      src="Introduction to Java threads2_files/c_bllftbottom.gif" width=8 
+      border=0></NOBR></TD>
+    <TD width="100%"><IMG height=1 
+      src="Introduction to Java threads2_files/spacer.gif" width=1 border=0></TD>
+    <TD width=8><IMG height=8 
+      src="Introduction to Java threads2_files/spacer.gif" width=8 
+  border=0></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" align=center border=0>
+  <TBODY>
+  <TR>
+    <TD align=middle width=186 bgColor=#006699><NOBR><FONT 
+      face=Verdana,Geneva,Arial,Helvetica,sans-serif size=2></FONT></NOBR><A 
+      href="http://www.javaworld.com/"><IMG height=81 
+      src="Introduction to Java threads2_files/top_jwlogo.gif" width=186 
+      border=0></A></TD>
+    <TD vAlign=bottom width=8 bgColor=#cccccc><IMG height=8 
+      src="Introduction to Java threads2_files/c_blgrylftbottom.gif" width=8 
+      border=0></TD>
+    <TD vAlign=center align=middle width="100%" bgColor=#cccccc><!-- BOTTOM 468x60 AD STARTS HERE jw-articles-bottom-ad.txt -->
+      <TABLE cellSpacing=0 cellPadding=0 border=0>
+        <TBODY>
+        <TR>
+          <TD><FONT face=Arial,Helvetica,Sans-serif color=#000000 
+            size=-2>Advertisement: Support JavaWorld, click here!</FONT><BR>
+            <SCRIPT language=JavaScript 
+            src="\\labserver\Homes\McKelvyJ\My Documents\Introduction to Java threads2_files\spinbox(1).macworld[4]"></SCRIPT>
+            <NOSCRIPT><A href="http://spinbox.macworld.com/?SHT=jw-BottomBanner" 
+            target=_top><IMG 
+            src="Introduction to Java threads2_files/mp-Applelinks0408getban.gif"></A> 
+            </NOSCRIPT></TD></TR></TBODY></TABLE><!-- BOTTOM 468x60 AD ENDS HERE --></TD>
+    <TD width=8><IMG height=8 
+      src="Introduction to Java threads2_files/spacer.gif" width=8 
+  border=0></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" align=center bgColor=#006699 
+border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=center align=middle width="100%"><FONT 
+      face=Verdana,Geneva,Arial,Helvetica,sans-serif color=#ffffff size=1>
+      <P><BR><A href="http://www.javaworld.com/"><FONT 
+      color=#ffffff>HOME</FONT></A>&nbsp;|&nbsp; <A 
+      href="http://www.javaworld.com/features/index.shtml"><FONT 
+      color=#ffffff>FEATURED TUTORIALS</FONT></A>&nbsp;|&nbsp; <A 
+      href="http://www.javaworld.com/columns/index.shtml"><FONT 
+      color=#ffffff>COLUMNS</FONT></A>&nbsp;|&nbsp; <A 
+      href="http://www.javaworld.com/news-reviews/index.shtml"><FONT 
+      color=#ffffff>NEWS &amp; REVIEWS</FONT></A>&nbsp;|&nbsp; <A 
+      href="http://forums.devworld.com/webx?13@@.ee6b802"><FONT 
+      color=#ffffff>FORUM</FONT></A>&nbsp;|&nbsp; <A 
+      href="http://www.javaworld.com/resources/index.shtml"><FONT 
+      color=#ffffff>JW RESOURCES</FONT></A>&nbsp;|&nbsp; <A 
+      href="http://www.javaworld.com/info/jw-about-index.shtml"><FONT 
+      color=#ffffff>ABOUT JW</FONT></A>&nbsp;|&nbsp; <A 
+      href="http://www.javaworld.com/feedback"><FONT 
+      color=#ffffff>FEEDBACK</FONT></A> </P>
+      <P><A 
+      href="http://www.javaworld.com/javaworld/common/jw-copyright.html"><FONT 
+      color=#ffffff>Copyright © 2004</FONT></A> JavaWorld.com, an IDG company 
+      </P></FONT></TD>
+    <TD width=8 bgColor=#ffffff><IMG height=8 
+      src="Introduction to Java threads2_files/spacer.gif" width=8 
+  border=0></TD></TR>
+  <TR>
+    <TD vAlign=top align=right width="100%"><IMG height=8 
+      src="Introduction to Java threads2_files/c_blrtbottom.gif" width=8 
+      border=0></TD>
+    <TD width=8 bgColor=#ffffff><IMG height=8 
+      src="Introduction to Java threads2_files/spacer.gif" width=8 
+  border=0></TD></TR></TBODY></TABLE><!-- stories1.devworld.com --><!-- DOCID 657447 --><!--TALKBACK --><!-- EX: 951984000 --></BODY></BASEFONT></HTML>
