@@ -1,0 +1,90 @@
+H1 {
+	FONT-SIZE: x-large; FONT-FAMILY: arial,helvetica,sans-serif
+}
+H2 {
+	FONT-SIZE: large; FONT-FAMILY: arial,helvetica,sans-serif
+}
+H3 {
+	FONT-SIZE: medium; FONT-FAMILY: arial,helvetica,sans-serif
+}
+OL {
+	FONT-SIZE: small; COLOR: #000000; FONT-FAMILY: arial,helvetica,sans-serif
+}
+UL {
+	FONT-SIZE: small; COLOR: #000000; FONT-FAMILY: arial,helvetica,sans-serif
+}
+P {
+	FONT-SIZE: small; COLOR: #000000; FONT-FAMILY: arial,helvetica,sans-serif
+}
+BODY {
+	FONT-SIZE: small; COLOR: #000000; FONT-FAMILY: arial,helvetica,sans-serif
+}
+TD {
+	FONT-SIZE: small; COLOR: #000000; FONT-FAMILY: arial,helvetica,sans-serif
+}
+TR {
+	FONT-SIZE: small; COLOR: #000000; FONT-FAMILY: arial,helvetica,sans-serif
+}
+TH {
+	FONT-SIZE: small; COLOR: #000000; FONT-FAMILY: arial,helvetica,sans-serif
+}
+FORM {
+	FONT-SIZE: small; COLOR: #000000; FONT-FAMILY: arial,helvetica,sans-serif
+}
+PRE {
+	FONT-FAMILY: courier,sans-serif
+}
+TT {
+	FONT-FAMILY: courier,sans-serif
+}
+TD {
+	PADDING-LEFT: 1mm
+}
+.navhomehead {
+	FONT-SIZE: 80%; MARGIN-BOTTOM: 0px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px
+}
+.navhomehead {
+	COLOR: black
+}
+.navhomehead A:link {
+	COLOR: black
+}
+.navhomehead A:visited {
+	COLOR: black
+}
+.navhead {
+	FONT-SIZE: 80%; MARGIN-BOTTOM: 0px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px
+}
+.navhead {
+	COLOR: black
+}
+.navhead A:link {
+	COLOR: black
+}
+.navhead A:visited {
+	COLOR: black
+}
+.navfoot {
+	FONT-SIZE: 70%; COLOR: black
+}
+.navfoot A:link {
+	COLOR: black
+}
+.navfoot A:visited {
+	COLOR: black
+}
+SPAN.footdate {
+	FONT-SIZE: 70%; COLOR: black; FONT-FAMILY: Arial, sans-serif
+}
+SPAN.foothome {
+	FONT-SIZE: 70%; COLOR: black; FONT-FAMILY: Arial, sans-serif
+}
+SPAN.footfeed {
+	FONT-SIZE: 70%; COLOR: black; FONT-FAMILY: Arial, sans-serif
+}
+SPAN.footcopy {
+	FONT-SIZE: 70%; COLOR: black; FONT-FAMILY: Arial, sans-serif
+}
+TR.question P {
+	FONT-WEIGHT: bold
+}

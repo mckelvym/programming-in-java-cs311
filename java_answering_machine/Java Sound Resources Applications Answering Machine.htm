@@ -1,0 +1,455 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0035)http://jsresources.org/apps/am.html -->
+<HTML><HEAD><TITLE>Java Sound Resources: Applications: Answering Machine</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=ISO-8859-1">
+<META content="MSHTML 6.00.2800.1400" name=GENERATOR><LINK 
+title="Java Sound Resources" href="../index.html" rel=home><LINK 
+title="Java Sound Resources: Applications" href="../apps/index.html" 
+rel=up><LINK title="Java Sound Resources: Applications" 
+href="../apps/index.html" rel=previous><LINK 
+title="Java Sound Resources: Applications: JSInfo" href="../apps/jsinfo.html" 
+rel=next><LINK title="Java Sound Resources: Applications: Ripper" 
+href="../apps/ripper.html" rel=last><LINK 
+href="Java Sound Resources Applications Answering Machine_files/style.css" 
+type=text/css rel=stylesheet>
+<META 
+content="Java, Sound, Java Sound, JavaSound, Application,&#10;      Applications, Applet, GSM, Answering machine" 
+name=keyword></HEAD>
+<BODY class=tabular text=black vLink=#840084 aLink=#0000ff link=#0000ff 
+bgColor=white>
+<DIV class=webpage><A name=am></A>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" summary=Navigation border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=1 alt=" " src="" width=1></TD>
+    <TD vAlign=top align=left bgColor=white rowSpan=2>
+      <H1>Java Sound Resources: Applications: Answering Machine</H1>
+      <DIV class=section lang=en>
+      <DIV class=titlepage>
+      <DIV>
+      <DIV>
+      <H2 class=title style="CLEAR: both"><A name=N1001C></A>Web-based answering 
+      machine</H2></DIV></DIV>
+      <DIV></DIV></DIV>
+      <P>From the session <A 
+      href="http://servlet.java.sun.com/javaone/conf/sessions/1378/67415-sf2001.jsp" 
+      target=_top>Applet Programming with the Java Sound API</A> of the Java One 
+      2001.</P>
+      <DIV class=section lang=en>
+      <DIV class=titlepage>
+      <DIV>
+      <DIV>
+      <H3 class=title><A name=N10025></A>Abstract</H3></DIV></DIV>
+      <DIV></DIV></DIV>
+      <P>Using the Java Sound API in applets is one of the most interesting 
+      applications of the Java Sound API. Alas, it is also one of the most 
+      tricky. Different browser VMs, security restrictions and other variables 
+      make your task more difficult.</P>
+      <P>This application shows key techniques: a Web-based answering machine. 
+      It records speech, compresses it using a GSM 06.10 encoder and transfers 
+      it to a Web server. The owner of the answering machine can listen to the 
+      messages: they are loaded from the server, decoded to PCM and played on 
+      the local machine.</P>
+      <P>Special focus is on these issues:</P>
+      <DIV class=itemizedlist>
+      <UL type=disc>
+        <LI>
+        <P>Java Sound API security management</P>
+        <LI>
+        <P>Signing applets </P>
+        <LI>
+        <P>Invocation of the right VM </P>
+        <LI>
+        <P>Encoding and decoding to and from GSM 06.10 </P>
+        <LI>
+        <P>Transferring sound data to and from a Web server 
+      </P></LI></UL></DIV></DIV>
+      <DIV class=section lang=en>
+      <DIV class=titlepage>
+      <DIV>
+      <DIV>
+      <H3 class=title><A name=N1003E></A>Demo</H3></DIV></DIV>
+      <DIV></DIV></DIV>
+      <P><A href="http://jsresources.org/apps/AMCallerClientApplet.html" 
+      target=_top>Caller</A> - speak on the answering machine ! (Note that you 
+      must have enabled recording audio. See the slides for more 
+information)</P>
+      <P><A href="http://jsresources.org/apps/AMOwnerClientApplet.html" 
+      target=_top>Owner</A> - listen to the recorded messages</P></DIV>
+      <DIV class=section lang=en>
+      <DIV class=titlepage>
+      <DIV>
+      <DIV>
+      <H3 class=title><A name=N1004B></A>Download</H3></DIV></DIV>
+      <DIV></DIV></DIV>
+      <DIV class=informaltable>
+      <TABLE border=0>
+        <COLGROUP>
+        <COL>
+        <COL></COLGROUP>
+        <TBODY>
+        <TR vAlign=top>
+          <TD vAlign=top><A 
+            href="http://java.sun.com/javaone/javaone2001/pdfs/1378.pdf" 
+            target=_top>1378.pdf</A> (280 kB)</TD>
+          <TD vAlign=top>Presentation slides (right-click and select "save 
+            as..." to save it to disk)</TD></TR>
+        <TR vAlign=top>
+          <TD vAlign=top><A 
+            href="http://sourceforge.net/project/showfiles.php?group_id=11738&amp;release_id=166623" 
+            target=_top>am-src-&lt;version&gt;.zip</A></TD>
+          <TD vAlign=top>Complete source code with incomplete 
+        instructions</TD></TR>
+        <TR vAlign=top>
+          <TD vAlign=top><A 
+            href="http://sourceforge.net/project/showfiles.php?group_id=11738&amp;release_id=166623" 
+            target=_top>am-&lt;version&gt;.jar</A></TD>
+          <TD vAlign=top>Compiled classes. You still need tritonus_gsm.jar and 
+            tritonus_share.jar from <A 
+            href="http://www.tritonus.org/plugins.html" target=_top>Tritonus' 
+            plugin page</A>.</TD></TR>
+        <TR vAlign=top>
+          <TD vAlign=top><A 
+            href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/jsresources/jsresources/apps/am/" 
+            target=_top>CVS</A></TD>
+          <TD vAlign=top>Browse the source code online in the CVS 
+          repository.</TD></TR></TBODY></TABLE></DIV></DIV></DIV><BR></TD></TR>
+  <TR>
+    <TD vAlign=top align=left width=220 bgColor=#ff8c00>
+      <P class=navtoc><A href="http://jsresources.org/index.html"><IMG 
+      alt="jsresources.org logo" 
+      src="Java Sound Resources Applications Answering Machine_files/jsresources_small.gif" 
+      align=left border=0></A><BR clear=all><BR><SPAN class=toplevel><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><A 
+      title="Programming examples for the Java Sound API" 
+      href="http://jsresources.org/examples/index.html"><IMG alt=&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/open.gif" 
+      border=0></A><SPAN class=otherpage><A 
+      title="Programming examples for the Java Sound API" 
+      href="http://jsresources.org/examples/index.html">Examples</A></SPAN><BR></SPAN><SPAN 
+      class=shrink1><IMG alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><A 
+      title="Sample programs for the Java Sound API, Audio&#10;&#9;section" 
+      href="http://jsresources.org/examples/audio_playing_recording.html"><IMG 
+      alt=&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/closed.gif" 
+      border=0></A><SPAN class=otherpage><A 
+      title="Sample programs for the Java Sound API, Audio&#10;&#9;section" 
+      href="http://jsresources.org/examples/audio_playing_recording.html">Audio 
+      Playback and Recording</A></SPAN><BR></SPAN><SPAN class=shrink1><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><A 
+      title="Sample programs for the Java Sound API, Audio Files&#10;&#9;section" 
+      href="http://jsresources.org/examples/audio_files.html"><IMG alt=&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/closed.gif" 
+      border=0></A><SPAN class=otherpage><A 
+      title="Sample programs for the Java Sound API, Audio Files&#10;&#9;section" 
+      href="http://jsresources.org/examples/audio_files.html">Audio 
+      Files</A></SPAN><BR></SPAN><SPAN class=shrink1><IMG alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><A 
+      title="Sample programs for the Java Sound API, Audio Conversion&#10;&#9;section" 
+      href="http://jsresources.org/examples/audio_conversion.html"><IMG 
+      alt=&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/closed.gif" 
+      border=0></A><SPAN class=otherpage><A 
+      title="Sample programs for the Java Sound API, Audio Conversion&#10;&#9;section" 
+      href="http://jsresources.org/examples/audio_conversion.html">Audio 
+      Conversion</A></SPAN><BR></SPAN><SPAN class=shrink1><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><A 
+      title="Sample programs for the Java Sound API,&#10;&#9;CD Digital Audio Extraction section" 
+      href="http://jsresources.org/examples/audio_cdda.html"><IMG alt=&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/closed.gif" 
+      border=0></A><SPAN class=otherpage><A 
+      title="Sample programs for the Java Sound API,&#10;&#9;CD Digital Audio Extraction section" 
+      href="http://jsresources.org/examples/audio_cdda.html">CD Digital Audio 
+      Extraction</A></SPAN><BR></SPAN><SPAN class=shrink1><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><A 
+      title="Sample programs for the Java Sound API, Misc Audio&#10;&#9;section" 
+      href="http://jsresources.org/examples/audio_misc.html"><IMG alt=&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/closed.gif" 
+      border=0></A><SPAN class=otherpage><A 
+      title="Sample programs for the Java Sound API, Misc Audio&#10;&#9;section" 
+      href="http://jsresources.org/examples/audio_misc.html">Misc 
+      Audio</A></SPAN><BR></SPAN><SPAN class=shrink1><IMG alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><A 
+      title="Sample programs for the Java Sound API, MIDI Playback and Recording&#10;&#9;section" 
+      href="http://jsresources.org/examples/midi_playback_and_recording.html"><IMG 
+      alt=&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/closed.gif" 
+      border=0></A><SPAN class=otherpage><A 
+      title="Sample programs for the Java Sound API, MIDI Playback and Recording&#10;&#9;section" 
+      href="http://jsresources.org/examples/midi_playback_and_recording.html">MIDI 
+      Playback and Recording</A></SPAN><BR></SPAN><SPAN class=shrink1><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><A 
+      title="Sample programs for the Java Sound API, MIDI Files&#10;&#9;section" 
+      href="http://jsresources.org/examples/midi_files.html"><IMG alt=&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/closed.gif" 
+      border=0></A><SPAN class=otherpage><A 
+      title="Sample programs for the Java Sound API, MIDI Files&#10;&#9;section" 
+      href="http://jsresources.org/examples/midi_files.html">MIDI 
+      Files</A></SPAN><BR></SPAN><SPAN class=shrink1><IMG alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><A 
+      title="Sample programs for the Java Sound API, MIDI Input/Output&#10;&#9;section" 
+      href="http://jsresources.org/examples/midi_io.html"><IMG alt=&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/closed.gif" 
+      border=0></A><SPAN class=otherpage><A 
+      title="Sample programs for the Java Sound API, MIDI Input/Output&#10;&#9;section" 
+      href="http://jsresources.org/examples/midi_io.html">MIDI 
+      Input/Output</A></SPAN><BR></SPAN><SPAN class=shrink1><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><A 
+      title="Sample programs for the Java Sound API, MIDI Synthesizer&#10;&#9;section" 
+      href="http://jsresources.org/examples/midi_synthesizer.html"><IMG 
+      alt=&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/closed.gif" 
+      border=0></A><SPAN class=otherpage><A 
+      title="Sample programs for the Java Sound API, MIDI Synthesizer&#10;&#9;section" 
+      href="http://jsresources.org/examples/midi_synthesizer.html">MIDI 
+      Synthesizer</A></SPAN><BR></SPAN><SPAN class=shrink1><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><A 
+      title="Sample programs for the Java Sound API,&#10;&#9;alphabetical list" 
+      href="http://jsresources.org/examples/examples_a_z.html"><IMG alt=&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/closed.gif" 
+      border=0></A><SPAN class=otherpage><A 
+      title="Sample programs for the Java Sound API,&#10;&#9;alphabetical list" 
+      href="http://jsresources.org/examples/examples_a_z.html">A - 
+      Z</A></SPAN><BR></SPAN><SPAN class=shrink1><IMG alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><A 
+      title="Sample programs for the Java Sound API, download&#10;&#9;page" 
+      href="http://jsresources.org/examples/examples_download.html"><IMG 
+      alt=&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/leaf.gif" 
+      border=0></A><SPAN class=otherpage><A 
+      title="Sample programs for the Java Sound API, download&#10;&#9;page" 
+      href="http://jsresources.org/examples/examples_download.html">Download</A></SPAN><BR></SPAN><SPAN 
+      class=toplevel><IMG alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><A 
+      title="Frequently Asked Questions for the Java Sound&#10;      API" 
+      href="http://jsresources.org/faq.html"><IMG alt=&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/open.gif" 
+      border=0></A><SPAN class=otherpage><A 
+      title="Frequently Asked Questions for the Java Sound&#10;      API" 
+      href="http://jsresources.org/faq.html">FAQ</A></SPAN><BR></SPAN><SPAN 
+      class=shrink1><IMG alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><A 
+      title="Frequently Asked Questions for the Java Sound&#10;      API" 
+      href="http://jsresources.org/faq_general.html"><IMG alt=&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/leaf.gif" 
+      border=0></A><SPAN class=otherpage><A 
+      title="Frequently Asked Questions for the Java Sound&#10;      API" 
+      href="http://jsresources.org/faq_general.html">General</A></SPAN><BR></SPAN><SPAN 
+      class=shrink1><IMG alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><A 
+      title="Frequently Asked Questions for the Java Sound&#10;      API" 
+      href="http://jsresources.org/faq_audio.html"><IMG alt=&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/leaf.gif" 
+      border=0></A><SPAN class=otherpage><A 
+      title="Frequently Asked Questions for the Java Sound&#10;      API" 
+      href="http://jsresources.org/faq_audio.html">Audio 
+      Programming</A></SPAN><BR></SPAN><SPAN class=shrink1><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><A 
+      title="Frequently Asked Questions for the Java Sound&#10;      API" 
+      href="http://jsresources.org/faq_midi.html"><IMG alt=&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/leaf.gif" 
+      border=0></A><SPAN class=otherpage><A 
+      title="Frequently Asked Questions for the Java Sound&#10;      API" 
+      href="http://jsresources.org/faq_midi.html">MIDI 
+      Programming</A></SPAN><BR></SPAN><SPAN class=shrink1><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><A 
+      title="Frequently Asked Questions for the Java Sound&#10;      API" 
+      href="http://jsresources.org/faq_applets.html"><IMG alt=&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/leaf.gif" 
+      border=0></A><SPAN class=otherpage><A 
+      title="Frequently Asked Questions for the Java Sound&#10;      API" 
+      href="http://jsresources.org/faq_applets.html">Applets</A></SPAN><BR></SPAN><SPAN 
+      class=shrink1><IMG alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><A 
+      title="Frequently Asked Questions for the Java Sound&#10;      API" 
+      href="http://jsresources.org/faq_performance.html"><IMG alt=&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/leaf.gif" 
+      border=0></A><SPAN class=otherpage><A 
+      title="Frequently Asked Questions for the Java Sound&#10;      API" 
+      href="http://jsresources.org/faq_performance.html">Performance 
+      Issues</A></SPAN><BR></SPAN><SPAN class=shrink1><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><A 
+      title="Frequently Asked Questions for the Java Sound&#10;      API" 
+      href="http://jsresources.org/faq_resources.html"><IMG alt=&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/leaf.gif" 
+      border=0></A><SPAN class=otherpage><A 
+      title="Frequently Asked Questions for the Java Sound&#10;      API" 
+      href="http://jsresources.org/faq_resources.html">Other 
+      Resources</A></SPAN><BR></SPAN><SPAN class=shrink1><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><A 
+      title="Frequently Asked Questions for the Java Sound&#10;      API" 
+      href="http://jsresources.org/faq_tritonus.html"><IMG alt=&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/leaf.gif" 
+      border=0></A><SPAN class=otherpage><A 
+      title="Frequently Asked Questions for the Java Sound&#10;      API" 
+      href="http://jsresources.org/faq_tritonus.html">Tritonus</A></SPAN><BR></SPAN><SPAN 
+      class=shrink1><IMG alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><A 
+      title="Frequently Asked Questions for the Java Sound&#10;      API" 
+      href="http://jsresources.org/faq_misc.html"><IMG alt=&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/leaf.gif" 
+      border=0></A><SPAN class=otherpage><A 
+      title="Frequently Asked Questions for the Java Sound&#10;      API" 
+      href="http://jsresources.org/faq_misc.html">Miscellaneous</A></SPAN><BR></SPAN><SPAN 
+      class=toplevel><IMG alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><A 
+      title="Applications using the Java Sound API" 
+      href="http://jsresources.org/apps/index.html"><IMG alt=&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/open.gif" 
+      border=0></A><SPAN class=ancestor><A 
+      title="Applications using the Java Sound API" 
+      href="http://jsresources.org/apps/index.html">Applications</A></SPAN><BR></SPAN><SPAN 
+      class=shrink1><IMG alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><A 
+      title="Anwering Machine" href="http://jsresources.org/apps/am.html"><IMG 
+      alt=+ 
+      src="F:\Java Answering Machine\Java Sound Resources Applications Answering Machine_files\leaf(1).gif" 
+      border=0></A><SPAN class=curpage>Anwering Machine&nbsp;<IMG alt="<-" 
+      src="Java Sound Resources Applications Answering Machine_files/pointer.gif"></SPAN><BR></SPAN><SPAN 
+      class=shrink1><IMG alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><A 
+      title="JSInfo: static information about the Java Sound&#10;      implementation" 
+      href="http://jsresources.org/apps/jsinfo.html"><IMG alt=&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/leaf.gif" 
+      border=0></A><SPAN class=otherpage><A 
+      title="JSInfo: static information about the Java Sound&#10;      implementation" 
+      href="http://jsresources.org/apps/jsinfo.html">JSInfo</A></SPAN><BR></SPAN><SPAN 
+      class=shrink1><IMG alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><A 
+      title=MidiPlayer href="http://jsresources.org/apps/midiplayer.html"><IMG 
+      alt=&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/leaf.gif" 
+      border=0></A><SPAN class=otherpage><A title=MidiPlayer 
+      href="http://jsresources.org/apps/midiplayer.html">MidiPlayer</A></SPAN><BR></SPAN><SPAN 
+      class=shrink1><IMG alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><A 
+      title=Ripper href="http://jsresources.org/apps/ripper.html"><IMG 
+      alt=&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/leaf.gif" 
+      border=0></A><SPAN class=otherpage><A title=Ripper 
+      href="http://jsresources.org/apps/ripper.html">Ripper</A></SPAN><BR></SPAN><SPAN 
+      class=toplevel><IMG alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><A 
+      title="Links related to Java Sound" 
+      href="http://jsresources.org/links.html"><IMG alt=&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/leaf.gif" 
+      border=0></A><SPAN class=otherpage><A title="Links related to Java Sound" 
+      href="http://jsresources.org/links.html">Links</A></SPAN><BR></SPAN><SPAN 
+      class=toplevel><IMG alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><A 
+      title="Site search for jsresources.org" 
+      href="http://jsresources.org/search.html"><IMG alt=&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/leaf.gif" 
+      border=0></A><SPAN class=otherpage><A 
+      title="Site search for jsresources.org" 
+      href="http://jsresources.org/search.html">Search</A></SPAN><BR></SPAN><SPAN 
+      class=toplevel><IMG alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><A 
+      title="Contact information for jsresources.org" 
+      href="http://jsresources.org/contact/index.html"><IMG alt=&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/open.gif" 
+      border=0></A><SPAN class=otherpage><A 
+      title="Contact information for jsresources.org" 
+      href="http://jsresources.org/contact/index.html">Contact</A></SPAN><BR></SPAN><SPAN 
+      class=shrink1><IMG alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><A 
+      title="Guidelines to asking Questions on javasound-interest and tritonus-user" 
+      href="http://jsresources.org/contact/q_guidelines.html"><IMG alt=&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/leaf.gif" 
+      border=0></A><SPAN class=otherpage><A 
+      title="Guidelines to asking Questions on javasound-interest and tritonus-user" 
+      href="http://jsresources.org/contact/q_guidelines.html">Question 
+      Guidelines</A></SPAN><BR></SPAN><SPAN class=shrink1><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><IMG 
+      alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><A 
+      title="The authors of jsresources.org" 
+      href="http://jsresources.org/contact/authors.html"><IMG alt=&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/leaf.gif" 
+      border=0></A><SPAN class=otherpage><A 
+      title="The authors of jsresources.org" 
+      href="http://jsresources.org/contact/authors.html">Authors</A></SPAN><BR></SPAN><SPAN 
+      class=toplevel><IMG alt=&nbsp;&nbsp;&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/blank.gif"><A 
+      title="Resources for developers (cvs, bug tracking, etc.)" 
+      href="http://jsresources.org/development/index.html"><IMG alt=&nbsp; 
+      src="Java Sound Resources Applications Answering Machine_files/leaf.gif" 
+      border=0></A><SPAN class=otherpage><A 
+      title="Resources for developers (cvs, bug tracking, etc.)" 
+      href="http://jsresources.org/development/index.html">Development</A></SPAN><BR></SPAN><BR></P></TD></TR></TBODY></TABLE>
+<DIV class=navfoot>
+<HR>
+
+<TABLE width="100%" summary="Footer navigation" border=0>
+  <TBODY>
+  <TR>
+    <TD align=left width="33%"><SPAN class=footdate>$Date: 2004/02/17 19:05:39 
+      $</SPAN></TD>
+    <TD align=middle width="34%"><SPAN class=foothome><A 
+      href="http://jsresources.org/index.html">Home</A></SPAN></TD>
+    <TD align=right width="33%">&nbsp;</TD></TR>
+  <TR>
+    <TD align=right colSpan=3><SPAN class=footcopy><SPAN 
+      class=copyright>Copyright © 2004 Matthias Pfisterer, Florian Bomers. 
+      </SPAN></SPAN></TD></TR></TBODY></TABLE></DIV></DIV></BODY></HTML>
