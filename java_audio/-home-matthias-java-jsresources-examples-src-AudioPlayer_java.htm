@@ -1,0 +1,551 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0057)http://www.jsresources.org/examples/AudioPlayer.java.html -->
+<HTML><HEAD><TITLE>/home/matthias/java/jsresources/examples/src/AudioPlayer.java</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+<META content="MSHTML 6.00.2800.1400" name=GENERATOR>
+<META content=2004-01-06T06:09:09+00:00 name=date></HEAD>
+<BODY bgColor=#ffffff><PRE width=80><FONT color=#b22222>/*
+ *	AudioPlayer.java
+ *
+ *	This file is part of jsresources.org
+ */</FONT>
+
+<FONT color=#b22222>/*
+ * Copyright (c) 1999, 2000 by Matthias Pfisterer
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice,
+ *   this list of conditions and the following disclaimer.
+ * - Redistributions in binary form must reproduce the above copyright
+ *   notice, this list of conditions and the following disclaimer in the
+ *   documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+ * OF THE POSSIBILITY OF SUCH DAMAGE.
+ */</FONT>
+
+<FONT color=#b22222>/*
+|&lt;---            this code is formatted to fit into 80 columns             ---&gt;|
+*/</FONT>
+
+<FONT color=#228b22>import java.io.BufferedInputStream;</FONT>
+<FONT color=#228b22>import java.io.File;</FONT>
+<FONT color=#228b22>import java.io.InputStream;</FONT>
+<FONT color=#228b22>import java.io.IOException;</FONT>
+
+<FONT color=#228b22>import java.net.URL;</FONT>
+
+<FONT color=#228b22>import javax.sound.sampled.AudioFormat;</FONT>
+<FONT color=#228b22>import javax.sound.sampled.AudioInputStream;</FONT>
+<FONT color=#228b22>import javax.sound.sampled.AudioSystem;</FONT>
+<FONT color=#228b22>import javax.sound.sampled.DataLine;</FONT>
+<FONT color=#228b22>import javax.sound.sampled.LineUnavailableException;</FONT>
+<FONT color=#228b22>import javax.sound.sampled.Mixer;</FONT>
+<FONT color=#228b22>import javax.sound.sampled.SourceDataLine;</FONT>
+
+<FONT color=#b22222>/*	If the compilation fails because this class is not available,
+	get gnu.getopt from the URL given in the comment below.
+*/</FONT>
+<FONT color=#228b22>import gnu.getopt.Getopt;</FONT>
+
+
+
+<FONT color=#b22222>/**	&lt;titleabbrev&gt;AudioPlayer&lt;/titleabbrev&gt;
+	&lt;title&gt;Playing an audio file (advanced)&lt;/title&gt;
+
+	&lt;formalpara&gt;&lt;title&gt;Purpose&lt;/title&gt;
+	&lt;para&gt;
+	Plays a single audio file. Capable of playing some
+	compressed audio formats (A-law, &amp;mu;-law, maybe ogg vorbis, mp3,
+	GSM06.10).
+	Allows control over buffering
+	and which mixer to use.
+	&lt;/para&gt;&lt;/formalpara&gt;
+
+	&lt;formalpara&gt;&lt;title&gt;Usage&lt;/title&gt;
+	&lt;para&gt;
+	&lt;cmdsynopsis&gt;
+	&lt;command&gt;java AudioPlayer&lt;/command&gt;
+	&lt;arg choice="plain"&gt;&lt;option&gt;-l&lt;/option&gt;&lt;/arg&gt;
+	&lt;/cmdsynopsis&gt;
+	&lt;cmdsynopsis&gt;
+	&lt;command&gt;java AudioPlayer&lt;/command&gt;
+	&lt;arg&gt;&lt;option&gt;-M &lt;replaceable&gt;mixername&lt;/replaceable&gt;&lt;/option&gt;&lt;/arg&gt;
+	&lt;arg&gt;&lt;option&gt;-e &lt;replaceable&gt;buffersize&lt;/replaceable&gt;&lt;/option&gt;&lt;/arg&gt;
+	&lt;arg&gt;&lt;option&gt;-i &lt;replaceable&gt;buffersize&lt;/replaceable&gt;&lt;/option&gt;&lt;/arg&gt;
+	&lt;arg choice="plain"&gt;&lt;replaceable&gt;audiofile&lt;/replaceable&gt;&lt;/arg&gt;
+	&lt;/cmdsynopsis&gt;
+	&lt;/para&gt;&lt;/formalpara&gt;
+
+	&lt;formalpara&gt;&lt;title&gt;Parameters&lt;/title&gt;
+	&lt;variablelist&gt;
+	&lt;varlistentry&gt;
+	&lt;term&gt;&lt;option&gt;-h&lt;/option&gt;&lt;/term&gt;
+	&lt;listitem&gt;&lt;para&gt;print usage message&lt;/para&gt;&lt;/listitem&gt;
+	&lt;/varlistentry&gt;
+	&lt;varlistentry&gt;
+	&lt;term&gt;&lt;option&gt;-l&lt;/option&gt;&lt;/term&gt;
+	&lt;listitem&gt;&lt;para&gt;lists the available mixers&lt;/para&gt;&lt;/listitem&gt;
+	&lt;/varlistentry&gt;
+	&lt;varlistentry&gt;
+	&lt;term&gt;&lt;option&gt;-M &lt;replaceable&gt;mixername&lt;/replaceable&gt;&lt;/option&gt;&lt;/term&gt;
+	&lt;listitem&gt;&lt;para&gt;selects a mixer to play on&lt;/para&gt;&lt;/listitem&gt;
+	&lt;/varlistentry&gt;
+	&lt;varlistentry&gt;
+	&lt;term&gt;&lt;option&gt;-e &lt;replaceable&gt;buffersize&lt;/replaceable&gt;&lt;/option&gt;&lt;/term&gt;
+	&lt;listitem&gt;&lt;para&gt;the buffer size to use in the application ("extern")&lt;/para&gt;&lt;/listitem&gt;
+	&lt;/varlistentry&gt;
+	&lt;varlistentry&gt;
+	&lt;term&gt;&lt;option&gt;-i &lt;replaceable&gt;buffersize&lt;/replaceable&gt;&lt;/option&gt;&lt;/term&gt;
+	&lt;listitem&gt;&lt;para&gt;the buffer size to use in Java Sound ("intern")&lt;/para&gt;&lt;/listitem&gt;
+	&lt;/varlistentry&gt;
+	&lt;varlistentry&gt;
+	&lt;term&gt;&lt;option&gt;-E &lt;replaceable&gt;endianess&lt;/replaceable&gt;&lt;/option&gt;&lt;/term&gt;
+	&lt;listitem&gt;&lt;para&gt;the endianess ("big" or "little") to use in conversions. The default is little. Specifying this option forces a conversion, even if the audio format is supported by SourceDataLines directly.&lt;/para&gt;&lt;/listitem&gt;
+	&lt;/varlistentry&gt;
+	&lt;varlistentry&gt;
+	&lt;term&gt;&lt;option&gt;-S &lt;replaceable&gt;sample size&lt;/replaceable&gt;&lt;/option&gt;&lt;/term&gt;
+	&lt;listitem&gt;&lt;para&gt;the sample size in bits to use in conversions. The default is 16. Specifying this option forces a conversion, even if the audio format is supported by SourceDataLines directly.&lt;/para&gt;&lt;/listitem&gt;
+	&lt;/varlistentry&gt;
+	&lt;varlistentry&gt;
+	&lt;term&gt;&lt;option&gt;-D&lt;/option&gt;&lt;/term&gt;
+	&lt;listitem&gt;&lt;para&gt;enable debugging output&lt;/para&gt;&lt;/listitem&gt;
+	&lt;/varlistentry&gt;
+	&lt;varlistentry&gt;
+	&lt;term&gt;&lt;option&gt;-f&lt;/option&gt;&lt;/term&gt;
+	&lt;listitem&gt;&lt;para&gt;interpret filename arguments as filenames. This is the default. This option is exclusive to &lt;option&gt;-u&lt;/option&gt;.&lt;/para&gt;&lt;/listitem&gt;
+	&lt;/varlistentry&gt;
+	&lt;varlistentry&gt;
+	&lt;term&gt;&lt;option&gt;-u&lt;/option&gt;&lt;/term&gt;
+	&lt;listitem&gt;&lt;para&gt;interpret filename arguments as URLs. The default is to interpret them as filenames. This option is exclusive to &lt;option&gt;-f&lt;/option&gt;.&lt;/para&gt;&lt;/listitem&gt;
+	&lt;/varlistentry&gt;
+	&lt;varlistentry&gt;
+	&lt;term&gt;&lt;option&gt;&lt;replaceable&gt;audiofile&lt;/replaceable&gt;&lt;/option&gt;&lt;/term&gt;
+	&lt;listitem&gt;&lt;para&gt;the file name of the audio file to play&lt;/para&gt;&lt;/listitem&gt;
+	&lt;/varlistentry&gt;
+	&lt;/variablelist&gt;
+	&lt;/formalpara&gt;
+
+	&lt;formalpara&gt;&lt;title&gt;Bugs, limitations&lt;/title&gt;
+	&lt;para&gt;
+	Compressed formats can be handled depending on the
+	capabilities of the Java Sound implementation.
+	A-law and &amp;mu;-law can be handled in any known Java Sound implementation.
+	Ogg vorbis, mp3 and GSM 06.10 can be handled by Tritonus. If you want to play these
+	formats with the Sun jdk1.3/1.4, you have to install the respective plug-ins
+	from &lt;ulink url
+	="http://www.tritonus.org/plugins.html"&gt;Tritonus Plug-ins&lt;/ulink&gt;.
+	&lt;/para&gt;
+	&lt;/formalpara&gt;
+
+	&lt;formalpara&gt;&lt;title&gt;Source code&lt;/title&gt;
+	&lt;para&gt;
+	&lt;ulink url="AudioPlayer.java.html"&gt;AudioPlayer.java&lt;/ulink&gt;,
+	&lt;ulink url="AudioLoop.java.html"&gt;AudioLoop.java&lt;/ulink&gt;,
+	&lt;olink targetdocent="getopt"&gt;gnu.getopt.Getopt&lt;/olink&gt;
+	&lt;/para&gt;
+	&lt;/formalpara&gt;
+
+*/</FONT>
+<STRONG><FONT color=#4169e1><A name=AudioPlayer></A>public class AudioPlayer</FONT></STRONG>
+{
+	<FONT color=#b22222>/**	Flag for debugging messages.
+	 *	If true, some messages are dumped to the console
+	 *	during operation.	
+	 */</FONT>
+	private static boolean	DEBUG = false;
+
+	private static int	DEFAULT_EXTERNAL_BUFFER_SIZE = 128000;
+
+
+
+<STRONG><FONT color=#4169e1>	public static void main(String[] args)</FONT></STRONG>
+		<FONT color=#4169e1>throws</FONT> Exception
+	{
+		<FONT color=#b22222>/** Determines if command line arguments are intereted as URL.
+		    If true, filename arguments on the command line are
+		    interpreted as URL. If false, they are interpreted as
+		    filenames. This flag is set by the command line
+		    option "-u". It is reset by the command line option
+		    "-f".
+		*/</FONT>
+		boolean	bInterpretFilenameAsUrl = false;
+
+		<FONT color=#b22222>/** Flag for forcing a conversion.
+		    If set to true, a conversion of the AudioInputStream
+		    (AudioSystem.getAudioInputStream(..., AudioInputStream))
+		    is done even if the format of the original AudioInputStream
+		    would be supported for SourceDataLines directly. This
+		    flag is set by the command line options "-E" and "-S".
+		*/</FONT>
+		boolean	bForceConversion = false;
+
+		<FONT color=#b22222>/** Endianess value to use in conversion.
+		    If a conversion of the AudioInputStream is done,
+		    this values is used as endianess in the target AudioFormat.
+		    The default value can be altered by the command line
+		    option "-B".
+		*/</FONT>
+		boolean	bBigEndian = false;
+
+		<FONT color=#b22222>/** Sample size value to use in conversion.
+		    If a conversion of the AudioInputStream is done,
+		    this values is used as sample size in the target
+		    AudioFormat.
+		    The default value can be altered by the command line
+		    option "-S".
+		*/</FONT>
+		int	nSampleSizeInBits = 16;
+
+
+		String	strMixerName = null;
+
+		int	nExternalBufferSize = DEFAULT_EXTERNAL_BUFFER_SIZE;
+
+		int	nInternalBufferSize = AudioSystem.NOT_SPECIFIED;
+
+
+
+		<FONT color=#b22222>/*
+		 *	Parsing of command-line options takes place...
+		 */</FONT>
+		Getopt	g = new Getopt(<FONT color=#666666>"AudioPlayer"</FONT>, args, <FONT color=#666666>"hlufM:e:i:E:S:D"</FONT>);
+		int	c;
+		<FONT color=#4169e1>while</FONT> ((c = g.getopt()) != -1)
+		{
+			<FONT color=#4169e1>switch</FONT> (c)
+			{
+			<FONT color=#4169e1>case</FONT> 'h':
+				printUsageAndExit();
+
+			<FONT color=#4169e1>case</FONT> 'l':
+				AudioCommon.listMixersAndExit(true);
+
+			<FONT color=#4169e1>case</FONT> 'u':
+				bInterpretFilenameAsUrl = true;
+				<FONT color=#4169e1>break</FONT>;
+
+			<FONT color=#4169e1>case</FONT> 'f':
+				bInterpretFilenameAsUrl = false;
+				<FONT color=#4169e1>break</FONT>;
+
+			<FONT color=#4169e1>case</FONT> 'M':
+				strMixerName = g.getOptarg();
+				<FONT color=#4169e1>if</FONT> (DEBUG) out(<FONT color=#666666>"AudioPlayer.main(): mixer name: "</FONT> + strMixerName);
+				<FONT color=#4169e1>break</FONT>;
+
+			<FONT color=#4169e1>case</FONT> 'e':
+				nExternalBufferSize = Integer.parseInt(g.getOptarg());
+				<FONT color=#4169e1>break</FONT>;
+
+			<FONT color=#4169e1>case</FONT> 'i':
+				nInternalBufferSize = Integer.parseInt(g.getOptarg());
+				<FONT color=#4169e1>break</FONT>;
+
+			<FONT color=#4169e1>case</FONT> 'E':
+				String strEndianess = g.getOptarg();
+				strEndianess = strEndianess.toLowerCase();
+				<FONT color=#4169e1>if</FONT> (strEndianess.equals(<FONT color=#666666>"big"</FONT>))
+				{
+					bBigEndian = true;
+				}
+				<FONT color=#4169e1>else</FONT> <FONT color=#4169e1>if</FONT> (strEndianess.equals(<FONT color=#666666>"little"</FONT>))
+				{
+					bBigEndian = false;
+				}
+				<FONT color=#4169e1>else</FONT>
+				{
+					printUsageAndExit();
+				}
+				bForceConversion = true;
+				<FONT color=#4169e1>break</FONT>;
+
+			<FONT color=#4169e1>case</FONT> 'S':
+				nSampleSizeInBits = Integer.parseInt(g.getOptarg());
+				bForceConversion = true;
+				<FONT color=#4169e1>break</FONT>;
+
+			<FONT color=#4169e1>case</FONT> 'D':
+				DEBUG = true;
+				<FONT color=#4169e1>break</FONT>;
+
+			<FONT color=#4169e1>case</FONT> '?':
+				printUsageAndExit();
+
+<STRONG><FONT color=#ff0000>			default:</FONT></STRONG>
+				out(<FONT color=#666666>"getopt() returned "</FONT> + c);
+				<FONT color=#4169e1>break</FONT>;
+			}
+		}
+
+		<FONT color=#b22222>/* We make shure that there is only one more argument, which
+		   we take as the filename of the soundfile we want to play. */</FONT>
+		String	strFilenameOrUrl = null;
+		<FONT color=#4169e1>for</FONT> (int i = g.getOptind(); i &lt; args.length; i++)
+		{
+			<FONT color=#4169e1>if</FONT> (strFilenameOrUrl == null)
+			{
+				strFilenameOrUrl = args[i];
+			}
+			<FONT color=#4169e1>else</FONT>
+			{
+				printUsageAndExit();
+			}
+		}
+		<FONT color=#4169e1>if</FONT> (strFilenameOrUrl == null)
+		{
+			printUsageAndExit();
+		}
+
+		AudioInputStream audioInputStream = null;
+		<FONT color=#4169e1>if</FONT> (bInterpretFilenameAsUrl)
+		{
+			URL url = new URL(strFilenameOrUrl);
+			audioInputStream = AudioSystem.getAudioInputStream(url);
+		}
+		<FONT color=#4169e1>else</FONT>
+		{
+			<FONT color=#b22222>// Are we requested to use standard input?</FONT>
+			<FONT color=#4169e1>if</FONT> (strFilenameOrUrl.equals(<FONT color=#666666>"-"</FONT>))
+			{
+				InputStream inputStream = new BufferedInputStream(System.in);
+				audioInputStream = AudioSystem.getAudioInputStream(inputStream);
+			}
+			<FONT color=#4169e1>else</FONT>
+			{
+				File file = new File(strFilenameOrUrl);
+				audioInputStream = AudioSystem.getAudioInputStream(file);
+			}
+		}
+	
+		<FONT color=#4169e1>if</FONT> (DEBUG) out(<FONT color=#666666>"AudioPlayer.main(): primary AIS: "</FONT> + audioInputStream);
+
+		<FONT color=#b22222>/*
+		 *	From the AudioInputStream, i.e. from the sound file,
+		 *	we fetch information about the format of the
+		 *	audio data.
+		 *	These information include the sampling frequency,
+		 *	the number of
+		 *	channels and the size of the samples.
+		 *	These information
+		 *	are needed to ask Java Sound for a suitable output line
+		 *	for this audio stream.
+		 */</FONT>
+		AudioFormat	audioFormat = audioInputStream.getFormat();
+		<FONT color=#4169e1>if</FONT> (DEBUG) out(<FONT color=#666666>"AudioPlayer.main(): primary format: "</FONT> + audioFormat);
+		DataLine.Info	info = new DataLine.Info(SourceDataLine.class,
+							 audioFormat, nInternalBufferSize);
+		boolean	bIsSupportedDirectly = AudioSystem.isLineSupported(info);
+		<FONT color=#4169e1>if</FONT> (!bIsSupportedDirectly || bForceConversion)
+		{
+			AudioFormat	sourceFormat = audioFormat;
+			AudioFormat	targetFormat = new AudioFormat(
+				AudioFormat.Encoding.PCM_SIGNED,
+				sourceFormat.getSampleRate(),
+				nSampleSizeInBits,
+				sourceFormat.getChannels(),
+				sourceFormat.getChannels() * (nSampleSizeInBits / 8),
+				sourceFormat.getSampleRate(),
+				bBigEndian);
+			<FONT color=#4169e1>if</FONT> (DEBUG)
+			{
+				out(<FONT color=#666666>"AudioPlayer.main(): source format: "</FONT> + sourceFormat);
+				out(<FONT color=#666666>"AudioPlayer.main(): target format: "</FONT> + targetFormat);
+			}
+			audioInputStream = AudioSystem.getAudioInputStream(targetFormat, audioInputStream);
+			audioFormat = audioInputStream.getFormat();
+			<FONT color=#4169e1>if</FONT> (DEBUG) out(<FONT color=#666666>"AudioPlayer.main(): converted AIS: "</FONT> + audioInputStream);
+			<FONT color=#4169e1>if</FONT> (DEBUG) out(<FONT color=#666666>"AudioPlayer.main(): converted format: "</FONT> + audioFormat);
+		}
+
+		SourceDataLine	line = getSourceDataLine(strMixerName, audioFormat, nInternalBufferSize);
+		<FONT color=#4169e1>if</FONT> (line == null)
+		{
+			out(<FONT color=#666666>"AudioPlayer: cannot get SourceDataLine for format "</FONT> + audioFormat);
+			System.exit(1);
+		}
+		<FONT color=#4169e1>if</FONT> (DEBUG) out(<FONT color=#666666>"AudioPlayer.main(): line: "</FONT> + line);
+		<FONT color=#4169e1>if</FONT> (DEBUG) out(<FONT color=#666666>"AudioPlayer.main(): line format: "</FONT> + line.getFormat());
+
+
+		<FONT color=#b22222>/*
+		 *	Still not enough. The line now can receive data,
+		 *	but will not pass them on to the audio output device
+		 *	(which means to your sound card). This has to be
+		 *	activated.
+		 */</FONT>
+		line.start();
+
+		<FONT color=#b22222>/*
+		 *	Ok, finally the line is prepared. Now comes the real
+		 *	job: we have to write data to the line. We do this
+		 *	in a loop. First, we read data from the
+		 *	AudioInputStream to a buffer. Then, we write from
+		 *	this buffer to the Line. This is done until the end
+		 *	of the file is reached, which is detected by a
+		 *	return value of -1 from the read method of the
+		 *	AudioInputStream.
+		 */</FONT>
+		int	nBytesRead = 0;
+		byte[]	abData = new byte[nExternalBufferSize];
+		<FONT color=#4169e1>if</FONT> (DEBUG) out(<FONT color=#666666>"AudioPlayer.main(): starting main loop"</FONT>);
+		<FONT color=#4169e1>while</FONT> (nBytesRead != -1)
+		{
+			<FONT color=#4169e1>try</FONT>
+			{
+				nBytesRead = audioInputStream.read(abData, 0, abData.length);
+			}
+			<FONT color=#4169e1>catch</FONT> (IOException e)
+			{
+				e.printStackTrace();
+			}
+			<FONT color=#4169e1>if</FONT> (DEBUG) out(<FONT color=#666666>"AudioPlayer.main(): read from AudioInputStream (bytes): "</FONT> + nBytesRead);
+			<FONT color=#4169e1>if</FONT> (nBytesRead &gt;= 0)
+			{
+				int	nBytesWritten = line.write(abData, 0, nBytesRead);
+				<FONT color=#4169e1>if</FONT> (DEBUG) out(<FONT color=#666666>"AudioPlayer.main(): written to SourceDataLine (bytes): "</FONT> + nBytesWritten);
+			}
+		}
+
+		<FONT color=#4169e1>if</FONT> (DEBUG) out(<FONT color=#666666>"AudioPlayer.main(): finished main loop"</FONT>);
+
+		<FONT color=#b22222>/*
+		 *	Wait until all data is played.
+		 *	This is only necessary because of the bug noted below.
+		 *	(If we do not wait, we would interrupt the playback by
+		 *	prematurely closing the line and exiting the VM.)
+		 *
+		 *	Thanks to Margie Fitch for bringing me on the right
+		 *	path to this solution.
+		 */</FONT>
+		<FONT color=#4169e1>if</FONT> (DEBUG) out(<FONT color=#666666>"AudioPlayer.main(): before drain"</FONT>);
+		line.drain();
+
+		<FONT color=#b22222>/*
+		 *	All data are played. We can close the shop.
+		 */</FONT>
+		<FONT color=#4169e1>if</FONT> (DEBUG) out(<FONT color=#666666>"AudioPlayer.main(): before close"</FONT>);
+		line.close();
+
+<FONT color=#b22222>// 		/*</FONT>
+<FONT color=#b22222>// 		 *	There is a bug in the Sun jdk1.3/1.4.</FONT>
+<FONT color=#b22222>// 		 *	It prevents correct termination of the VM.</FONT>
+<FONT color=#b22222>// 		 *	So we have to exit ourselves.</FONT>
+<FONT color=#b22222>//		 *	This bug has been fixed for the Sun JDK1.5.0.</FONT>
+<FONT color=#b22222>// 		 */</FONT>
+<FONT color=#b22222>// 		if (DEBUG)</FONT>
+<FONT color=#b22222>// 		{</FONT>
+<FONT color=#b22222>// 			out("AudioPlayer.main(): before exit");</FONT>
+<FONT color=#b22222>// 		}</FONT>
+<FONT color=#b22222>// 		System.exit(0);</FONT>
+	}
+
+
+	<FONT color=#b22222>// TODO: maybe can used by others. AudioLoop?</FONT>
+	<FONT color=#b22222>// In this case, move to AudioCommon.</FONT>
+<STRONG><FONT color=#4169e1>	private static SourceDataLine getSourceDataLine(String strMixerName,
+							AudioFormat audioFormat,
+							int nBufferSize)</FONT></STRONG>
+	{
+		<FONT color=#b22222>/*
+		 *	Asking for a line is a rather tricky thing.
+		 *	We have to construct an Info object that specifies
+		 *	the desired properties for the line.
+		 *	First, we have to say which kind of line we want. The
+		 *	possibilities are: SourceDataLine (for playback), Clip
+		 *	(for repeated playback)	and TargetDataLine (for
+		 *	 recording).
+		 *	Here, we want to do normal playback, so we ask for
+		 *	a SourceDataLine.
+		 *	Then, we have to pass an AudioFormat object, so that
+		 *	the Line knows which format the data passed to it
+		 *	will have.
+		 *	Furthermore, we can give Java Sound a hint about how
+		 *	big the internal buffer for the line should be. This
+		 *	isn't used here, signaling that we
+		 *	don't care about the exact size. Java Sound will use
+		 *	some default value for the buffer size.
+		 */</FONT>
+		SourceDataLine	line = null;
+		DataLine.Info	info = new DataLine.Info(SourceDataLine.class,
+							 audioFormat, nBufferSize);
+		<FONT color=#4169e1>try</FONT>
+		{
+			<FONT color=#4169e1>if</FONT> (strMixerName != null)
+			{
+				Mixer.Info	mixerInfo = AudioCommon.getMixerInfo(strMixerName);
+				<FONT color=#4169e1>if</FONT> (mixerInfo == null)
+				{
+					out(<FONT color=#666666>"AudioPlayer: mixer not found: "</FONT> + strMixerName);
+					System.exit(1);
+				}
+				Mixer	mixer = AudioSystem.getMixer(mixerInfo);
+				line = (SourceDataLine) mixer.getLine(info);
+			}
+			<FONT color=#4169e1>else</FONT>
+			{
+				line = (SourceDataLine) AudioSystem.getLine(info);
+			}
+
+			<FONT color=#b22222>/*
+			 *	The line is there, but it is not yet ready to
+			 *	receive audio data. We have to open the line.
+			 */</FONT>
+			line.open(audioFormat, nBufferSize);
+		}
+		<FONT color=#4169e1>catch</FONT> (LineUnavailableException e)
+		{
+			<FONT color=#4169e1>if</FONT> (DEBUG) e.printStackTrace();
+		}
+		<FONT color=#4169e1>catch</FONT> (Exception e)
+		{
+			<FONT color=#4169e1>if</FONT> (DEBUG) e.printStackTrace();
+		}
+		<FONT color=#4169e1>return</FONT> line;
+	}
+
+
+
+<STRONG><FONT color=#4169e1>	private static void printUsageAndExit()</FONT></STRONG>
+	{
+		out(<FONT color=#666666>"AudioPlayer: usage:"</FONT>);
+		out(<FONT color=#666666>"\tjava AudioPlayer -h"</FONT>);
+		out(<FONT color=#666666>"\tjava AudioPlayer -l"</FONT>);
+		out(<FONT color=#666666>"\tjava AudioPlayer"</FONT>);
+		out(<FONT color=#666666>"\t\t[-M &lt;mixername&gt;]"</FONT>);
+		out(<FONT color=#666666>"\t\t[-e &lt;externalBuffersize&gt;]"</FONT>);
+		out(<FONT color=#666666>"\t\t[-i &lt;internalBuffersize&gt;]"</FONT>);
+		out(<FONT color=#666666>"\t\t[-S &lt;SampleSizeInBits&gt;]"</FONT>);
+		out(<FONT color=#666666>"\t\t[-B (big | little)]"</FONT>);
+		out(<FONT color=#666666>"\t\t[-D]"</FONT>);
+		out(<FONT color=#666666>"\t\t[-u | -f]"</FONT>);
+		out(<FONT color=#666666>"\t\t&lt;soundfileOrUrl&gt;"</FONT>);
+		System.exit(1);
+	}
+
+
+
+<STRONG><FONT color=#4169e1>	private static void out(String strMessage)</FONT></STRONG>
+	{
+		System.out.println(strMessage);
+	}
+}
+
+
+
+<FONT color=#b22222>/*** AudioPlayer.java ***/</FONT>
+</PRE></BODY></HTML>

@@ -1,0 +1,272 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0059)http://jsresources.org/examples/SimpleAudioPlayer.java.html -->
+<HTML><HEAD><TITLE>/home/matthias/java/jsresources/examples/src/SimpleAudioPlayer.java</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+<META content="MSHTML 6.00.2800.1400" name=GENERATOR>
+<META content=2003-12-04T10:47:15+00:00 name=date></HEAD>
+<BODY bgColor=#ffffff><PRE width=80><FONT color=#b22222>/*
+ *	SimpleAudioPlayer.java
+ *
+ *	This file is part of jsresources.org
+ */</FONT>
+
+<FONT color=#b22222>/*
+ * Copyright (c) 1999 - 2001 by Matthias Pfisterer
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice,
+ *   this list of conditions and the following disclaimer.
+ * - Redistributions in binary form must reproduce the above copyright
+ *   notice, this list of conditions and the following disclaimer in the
+ *   documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+ * OF THE POSSIBILITY OF SUCH DAMAGE.
+ */</FONT>
+
+<FONT color=#b22222>/*
+|&lt;---            this code is formatted to fit into 80 columns             ---&gt;|
+*/</FONT>
+
+<FONT color=#228b22>import java.io.File;</FONT>
+<FONT color=#228b22>import java.io.IOException;</FONT>
+
+<FONT color=#228b22>import javax.sound.sampled.AudioFormat;</FONT>
+<FONT color=#228b22>import javax.sound.sampled.AudioInputStream;</FONT>
+<FONT color=#228b22>import javax.sound.sampled.AudioSystem;</FONT>
+<FONT color=#228b22>import javax.sound.sampled.DataLine;</FONT>
+<FONT color=#228b22>import javax.sound.sampled.LineUnavailableException;</FONT>
+<FONT color=#228b22>import javax.sound.sampled.SourceDataLine;</FONT>
+
+
+<FONT color=#b22222>/**	&lt;titleabbrev&gt;SimpleAudioPlayer&lt;/titleabbrev&gt;
+	&lt;title&gt;Playing an audio file (easy)&lt;/title&gt;
+
+	&lt;formalpara&gt;&lt;title&gt;Purpose&lt;/title&gt;
+	&lt;para&gt;Plays a single audio file.&lt;/para&gt;&lt;/formalpara&gt;
+
+	&lt;formalpara&gt;&lt;title&gt;Usage&lt;/title&gt;
+	&lt;cmdsynopsis&gt;
+	&lt;command&gt;java SimpleAudioPlayer&lt;/command&gt;
+	&lt;replaceable class="parameter"&gt;audiofile&lt;/replaceable&gt;
+	&lt;/cmdsynopsis&gt;
+	&lt;/formalpara&gt;
+
+	&lt;formalpara&gt;&lt;title&gt;Parameters&lt;/title&gt;
+	&lt;variablelist&gt;
+	&lt;varlistentry&gt;
+	&lt;term&gt;&lt;option&gt;&lt;replaceable class="parameter"&gt;audiofile&lt;/replaceable&gt;&lt;/option&gt;&lt;/term&gt;
+	&lt;listitem&gt;&lt;para&gt;the name of the
+	audio file that should be played&lt;/para&gt;&lt;/listitem&gt;
+	&lt;/varlistentry&gt;
+	&lt;/variablelist&gt;
+	&lt;/formalpara&gt;
+
+	&lt;formalpara&gt;&lt;title&gt;Bugs, limitations&lt;/title&gt;
+	&lt;para&gt;Only PCM encoded files are supported. A-law, &amp;mu;-law,
+	ADPCM, ogg vorbis, mp3 and other compressed data formats are
+	not supported. For playing these, see
+	&lt;olink targetdocent="AudioPlayer"&gt;AudioPlayer&lt;/olink&gt;.&lt;/para&gt;
+	&lt;/formalpara&gt;
+		
+	&lt;formalpara&gt;&lt;title&gt;Source code&lt;/title&gt;
+	&lt;para&gt;
+	&lt;ulink url="SimpleAudioPlayer.java.html"&gt;SimpleAudioPlayer.java&lt;/ulink&gt;
+	&lt;/para&gt;
+	&lt;/formalpara&gt;
+
+*/</FONT>
+<STRONG><FONT color=#4169e1><A name=SimpleAudioPlayer></A>public class SimpleAudioPlayer</FONT></STRONG>
+{
+	private static final int	EXTERNAL_BUFFER_SIZE = 128000;
+
+
+
+<STRONG><FONT color=#4169e1>	public static void main(String[] args)</FONT></STRONG>
+	{
+		<FONT color=#b22222>/*
+		  We check that there is exactely one command-line
+		  argument.
+		  If not, we display the usage message and exit.
+		*/</FONT>
+		<FONT color=#4169e1>if</FONT> (args.length != 1)
+		{
+			printUsageAndExit();
+		}
+
+		<FONT color=#b22222>/*
+		  Now, that we're shure there is an argument, we
+		  take it as the filename of the soundfile
+		  we want to play.
+		*/</FONT>
+		String	strFilename = args[0];
+		File	soundFile = new File(strFilename);
+	
+		<FONT color=#b22222>/*
+		  We have to read in the sound file.
+		*/</FONT>
+		AudioInputStream	audioInputStream = null;
+		<FONT color=#4169e1>try</FONT>
+		{
+			audioInputStream = AudioSystem.getAudioInputStream(soundFile);
+		}
+		<FONT color=#4169e1>catch</FONT> (Exception e)
+		{
+			<FONT color=#b22222>/*
+			  In case of an exception, we dump the exception
+			  including the stack trace to the console output.
+			  Then, we exit the program.
+			*/</FONT>
+			e.printStackTrace();
+			System.exit(1);
+		}
+
+		<FONT color=#b22222>/*
+		  From the AudioInputStream, i.e. from the sound file,
+		  we fetch information about the format of the
+		  audio data.
+		  These information include the sampling frequency,
+		  the number of
+		  channels and the size of the samples.
+		  These information
+		  are needed to ask Java Sound for a suitable output line
+		  for this audio file.
+		*/</FONT>
+		AudioFormat	audioFormat = audioInputStream.getFormat();
+
+		<FONT color=#b22222>/*
+		  Asking for a line is a rather tricky thing.
+		  We have to construct an Info object that specifies
+		  the desired properties for the line.
+		  First, we have to say which kind of line we want. The
+		  possibilities are: SourceDataLine (for playback), Clip
+		  (for repeated playback)	and TargetDataLine (for
+		  recording).
+		  Here, we want to do normal playback, so we ask for
+		  a SourceDataLine.
+		  Then, we have to pass an AudioFormat object, so that
+		  the Line knows which format the data passed to it
+		  will have.
+		  Furthermore, we can give Java Sound a hint about how
+		  big the internal buffer for the line should be. This
+		  isn't used here, signaling that we
+		  don't care about the exact size. Java Sound will use
+		  some default value for the buffer size.
+		*/</FONT>
+		SourceDataLine	line = null;
+		DataLine.Info	info = new DataLine.Info(SourceDataLine.class,
+												 audioFormat);
+		<FONT color=#4169e1>try</FONT>
+		{
+			line = (SourceDataLine) AudioSystem.getLine(info);
+
+			<FONT color=#b22222>/*
+			  The line is there, but it is not yet ready to
+			  receive audio data. We have to open the line.
+			*/</FONT>
+			line.open(audioFormat);
+		}
+		<FONT color=#4169e1>catch</FONT> (LineUnavailableException e)
+		{
+			e.printStackTrace();
+			System.exit(1);
+		}
+		<FONT color=#4169e1>catch</FONT> (Exception e)
+		{
+			e.printStackTrace();
+			System.exit(1);
+		}
+
+		<FONT color=#b22222>/*
+		  Still not enough. The line now can receive data,
+		  but will not pass them on to the audio output device
+		  (which means to your sound card). This has to be
+		  activated.
+		*/</FONT>
+		line.start();
+
+		<FONT color=#b22222>/*
+		  Ok, finally the line is prepared. Now comes the real
+		  job: we have to write data to the line. We do this
+		  in a loop. First, we read data from the
+		  AudioInputStream to a buffer. Then, we write from
+		  this buffer to the Line. This is done until the end
+		  of the file is reached, which is detected by a
+		  return value of -1 from the read method of the
+		  AudioInputStream.
+		*/</FONT>
+		int	nBytesRead = 0;
+		byte[]	abData = new byte[EXTERNAL_BUFFER_SIZE];
+		<FONT color=#4169e1>while</FONT> (nBytesRead != -1)
+		{
+			<FONT color=#4169e1>try</FONT>
+			{
+				nBytesRead = audioInputStream.read(abData, 0, abData.length);
+			}
+			<FONT color=#4169e1>catch</FONT> (IOException e)
+			{
+				e.printStackTrace();
+			}
+			<FONT color=#4169e1>if</FONT> (nBytesRead &gt;= 0)
+			{
+				int	nBytesWritten = line.write(abData, 0, nBytesRead);
+			}
+		}
+
+		<FONT color=#b22222>/*
+		  Wait until all data are played.
+		  This is only necessary because of the bug noted below.
+		  (If we do not wait, we would interrupt the playback by
+		  prematurely closing the line and exiting the VM.)
+		 
+		  Thanks to Margie Fitch for bringing me on the right
+		  path to this solution.
+		*/</FONT>
+		line.drain();
+
+		<FONT color=#b22222>/*
+		  All data are played. We can close the shop.
+		*/</FONT>
+		line.close();
+
+		<FONT color=#b22222>/*
+		  There is a bug in the jdk1.3/1.4.
+		  It prevents correct termination of the VM.
+		  So we have to exit ourselves.
+		*/</FONT>
+		System.exit(0);
+	}
+
+
+<STRONG><FONT color=#4169e1>	private static void printUsageAndExit()</FONT></STRONG>
+	{
+		out(<FONT color=#666666>"SimpleAudioPlayer: usage:"</FONT>);
+		out(<FONT color=#666666>"\tjava SimpleAudioPlayer &lt;soundfile&gt;"</FONT>);
+		System.exit(1);
+	}
+
+
+<STRONG><FONT color=#4169e1>	private static void out(String strMessage)</FONT></STRONG>
+	{
+		System.out.println(strMessage);
+	}
+}
+
+
+
+<FONT color=#b22222>/*** SimpleAudioPlayer.java ***/</FONT>
+</PRE></BODY></HTML>
