@@ -1,0 +1,13 @@
+main
+first
+second
+first thread starts running
+waiting for first thread to finish
+second starts
+second suspends
+first thread finishes running
+it's a long wait
+wakng up for second thread
+waiting for second thread to finish
+second runs again and finishes
+i'm ready to finish too
