@@ -1,0 +1,20 @@
+ID: 54321
+Hours: 55.0
+Rate: 5.25
+Wages: 328.125
+
+ID: 87985
+Hours: 40.0
+Rate: 10.0
+Wages: 400.0
+
+ID: 87422
+Hours: 10.0
+Rate: 3.3
+Wages: 33.0
+
+ID: 12575
+Hours: 25.0
+Rate: 2.8
+Wages: 70.0
+
